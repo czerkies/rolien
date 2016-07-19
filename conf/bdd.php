@@ -1,19 +1,17 @@
 <?php
 
-/**
-* Fonction de connection à la base de données.
-*
-* @param $host (string), $dbname (string), $user (string), $mdp (string), $options (array).
-*
-* @return array();
-*
-**/
-function connect() {
+include_once 'param.php';
 
-  $host = 'localhost'; // DSN
-  $dbname = 'rolien'; // Nom de la base
-  $user = 'root'; // Utilisateur
-  $mdp = 'root'; // Mot de Passe
+/**
+ * Fonction de connection à la base de données.
+ *
+ * @param
+ *
+ * @throws
+ * @author Czerkies
+ * @return Array Valeurs utilisés pour se connecter à la base de données.
+ */
+function connect() {
 
   $options = [ // Options
     PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING,
@@ -21,9 +19,9 @@ function connect() {
   ];
 
   return array(
-    'DSN' => 'mysql:host='.$host.';dbname='.$dbname.';',
-    'user' => $user,
-    'mdp' => $mdp,
+    'DSN' => 'mysql:host='.HOST.';dbname='.DBNAME.';',
+    'user' => USER,
+    'mdp' => MDP,
     'options' => $options
   );
 
