@@ -7,7 +7,8 @@ class helloController extends renderController {
     $fileView['FOLDER'] = 'hello';
     $fileView['FILE'] = 'world';
 
-    $hw = array('Hello', ' ', 'World', '.');
+    $word = new helloWorldModel('test');
+    $hw = $word->loadFromDB('word');
 
     $this->render(
       $fileView,

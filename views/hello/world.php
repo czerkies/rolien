@@ -1,3 +1,3 @@
 <?php
 
-foreach ($hw as $key => $value) echo $value;
+foreach ($hw as $value) echo $value['word'];
