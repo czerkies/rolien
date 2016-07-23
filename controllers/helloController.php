@@ -1,6 +1,6 @@
 <?php
 
-class helloControleur extends renderControleur {
+class helloController extends renderController {
 
   function world() {
 

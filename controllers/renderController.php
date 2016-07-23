@@ -9,7 +9,7 @@
  * @link http://romanczerkies.fr/
  * @since Class available since Release v1.0.0-alpha.1
  */
-class renderControleur {
+class renderController {
 
   /**
   * Fonction permettant l'affichage dans le template.

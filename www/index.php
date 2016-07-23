@@ -2,15 +2,15 @@
 
 function autoloader($class){
 
-  if(strpos($class, 'Controleur') !== FALSE){
-    if(file_exists('../controleurs/'.$class.'.php')){
-      include_once '../controleurs/'.$class.'.php';
+  if(strpos($class, 'Controller') !== FALSE){
+    if(file_exists('../controllers/'.$class.'.php')){
+      include_once '../controllers/'.$class.'.php';
     }
   }
 
-  if(strpos($class, 'Modele') !== FALSE){
-    if(file_exists('../modeles/'.$class.'.php')){
-      include_once '../modeles/'.$class.'.php';
+  if(strpos($class, 'Model') !== FALSE){
+    if(file_exists('../models/'.$class.'.php')){
+      include_once '../models/'.$class.'.php';
     }
   }
 
@@ -18,16 +18,16 @@ function autoloader($class){
 
 spl_autoload_register('autoloader');
 
-if(isset($_GET['controleur']) && !empty($_GET['controleur'])
+if(isset($_GET['controller']) && !empty($_GET['controller'])
   && isset($_GET['method']) && !empty($_GET['method'])){
 
-    $controleur = htmlentities($_GET['controleur']);
+    $controller = htmlentities($_GET['controller']);
     $method = htmlentities($_GET['method']);
 
-    if(file_exists('../controleurs/'.$controleur.'Controleur.php')) {
-      include('../controleurs/'.$controleur.'Controleur.php');
-        if(method_exists($controleur.'Controleur', $method)) {
-          $classe = $controleur.'Controleur';
+    if(file_exists('../controllers/'.$controller.'Controller.php')) {
+      include('../controllers/'.$controller.'Controller.php');
+        if(method_exists($controller.'Controller', $method)) {
+          $classe = $controller.'Controller';
           $instance = new $classe();
           $instance->$method();
 
