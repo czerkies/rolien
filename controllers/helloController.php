@@ -7,8 +7,14 @@ class helloController extends renderController {
     $fileView['FOLDER'] = 'hello';
     $fileView['FILE'] = 'world';
 
-    $word = new helloWorldModel('test');
-    $hw = $word->loadFromDB('word');
+    $limit = 4;
+
+    $word = new genericModel('test');
+    $hw = $word->loadFromDB('word', array(
+      'limit' => $limit,
+      'orderby' => 'word',
+      'order' => 'desc',
+    ));
 
     $this->render(
       $fileView,
