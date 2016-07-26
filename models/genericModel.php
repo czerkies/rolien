@@ -11,6 +11,8 @@
  */
 class genericModel extends connectModel {
 
+  private $table;
+
   public function __construct($table) {
     $this->table = $table;
   }
@@ -21,7 +23,7 @@ class genericModel extends connectModel {
   * @param
   * @return Object $pdo Instance de la connexion via PDO
   */
-  public function loadFromDB($rows = NULL, $conditions = NULL) {
+  public function selectDB($rows = NULL, $conditions = NULL) {
 
     $sql = "SELECT ";
     $sql .= ($rows) ? $rows." " : "* ";

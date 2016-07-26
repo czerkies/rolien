@@ -10,10 +10,11 @@ class helloController extends renderController {
     $limit = 4;
 
     $word = new genericModel('test');
-    $hw = $word->loadFromDB('word', array(
-      'limit' => $limit,
-      'orderby' => 'word',
-      'order' => 'desc',
+    $hw = $word->selectDB('word', array(
+      //'where' => "word = '.'",
+      //'limit' => $limit,
+      //'orderby' => 'word',
+      //'order' => 'desc'
     ));
 
     $this->render(
