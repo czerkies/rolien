@@ -7,15 +7,22 @@ class helloController extends renderController {
     $fileView['FOLDER'] = 'hello';
     $fileView['FILE'] = 'world';
 
-    $limit = 4;
+    $limit = '5';
 
-    $word = new genericModel('test');
-    $hw = $word->selectDB('word', array(
-      //'where' => "word = '.'",
-      //'limit' => $limit,
-      //'orderby' => 'word',
-      //'order' => 'desc'
-    ));
+    $word = new queryModel('test');
+    $hw = $word->selectDB(
+      'word',
+      array(
+        //'where' => "word = 'hello'",
+        //'limit' => $limit,
+        //'orderby' => 'word',
+        'order' => 'desc'
+      ),
+      'rows'
+    );
+
+    var_dump($hw);
+    echo "<hr>";
 
     $this->render(
       $fileView,
