@@ -11,14 +11,14 @@ class helloController extends renderController {
 
     $word = new queryModel('test');
     $hw = $word->selectDB(
-      'word',
       array(
-        //'where' => "word = 'hello'",
-        //'limit' => $limit,
-        //'orderby' => 'word',
-        'order' => 'desc'
-      ),
-      'rows'
+        'column' => 'word',
+        /*'where' => "word = 'hello'",
+        'limit' => $limit,
+        'orderby' => 'word',
+        'order' => 'desc',
+        'format' => 'rows'*/
+      )
     );
 
     var_dump($hw);

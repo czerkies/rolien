@@ -5,12 +5,11 @@
  *
  * Communique à toutes les autres class 'modele' la connexion à la base de données via PDO.
  *
- * @copyright rolien
  * @version Release: v1.0.0
  * @link http://romanczerkies.fr/
  * @since Class available since Release v1.0.0-alpha.1
  */
-class connectModel {
+class connectModel extends superController {
 
   /**
   * Fonction de connection à la bdd.
@@ -33,15 +32,6 @@ class connectModel {
       echo 'Connexion échouée : ' . $e->getMessage();
 
     }
-
-  }
-
-  public function displayError($class, $function, $explain = NULL) {
-
-    $error = 'Erreur dans la fonction <b>' . $function . '</b> de la class <b>' . $class . '</b>.<br>';
-    if($explain) $error .= 'Informations : ' . $explain;
-
-    die($error);
 
   }
 

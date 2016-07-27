@@ -23,14 +23,30 @@ class queryModel extends connectModel {
   * @param
   * @return Object $pdo Instance de la connexion via PDO
   */
-  public function selectDB($rows = NULL, $conditions = NULL, $format = NULL) {
+  public function selectDB($conditions = NULL) {
 
     $sql = "SELECT ";
-    $sql .= ($rows) ? $rows." " : "* ";
+
+    if(isset($conditions['column']) && !empty($conditions['column'])) {
+
+      if(is_string($conditions['column'])) $sql .= $conditions['column'] . " ";
+
+    } else {
+
+      $sql .= "* ";
+
+    }
+
     $sql .= "FROM " . $this->table;
 
-    if(isset($conditions['where'])) $sql .= " WHERE ".$conditions['where'];
+    if(isset($conditions['where'])) {
 
+      if(is_string($conditions['where']) && strlen($conditions['where']) > 4) $sql .= " WHERE ".$conditions['where'];
+      else $this->displayError(__CLASS__, __FUNCTION__, "'where' doit être au format 'string'.");
+
+    }
+
+    // Vérification orderby
     if(isset($conditions['orderby']) && !empty($conditions['orderby'])) {
 
       $sql .= " ORDER BY ".$conditions['orderby'];
@@ -43,21 +59,24 @@ class queryModel extends connectModel {
         else $this->displayError(__CLASS__, __FUNCTION__, "'order' doit être égal à 'DESC' ou 'ASC'.");
 
       }
+    }
+
+    // Vérification limit
+    if(isset($conditions['limit'])) {
+
+      if(is_numeric($conditions['limit']) && $conditions['limit'] >= 0) $sql .= " LIMIT ".$conditions['limit'];
+      else $this->displayError(__CLASS__, __FUNCTION__, "'limit' doit être un chiffre entier.");
 
     }
 
-    if(!isset($conditions['limit']) || (isset($conditions['limit']) && is_numeric($conditions['limit']))) $sql .= " LIMIT ".$conditions['limit'];
-    else $this->displayError(__CLASS__, __FUNCTION__, "'limit' doit être un chiffre entier.");
-
-    echo $sql.'<br>';
+    echo $sql.'<br>'; // supp
 
     $datas = $this->pdo()->query($sql);
 
     // Format de récupération des données.
-
-    if($format === NULL || empty($format) || $format === 'rows') $datasFormat = $datas->fetchAll(PDO::FETCH_ASSOC);
-    elseif($format === 'oneRow') $datasFormat = $datas->fetch(PDO::FETCH_ASSOC);
-    elseif($format === 'nbRows') $datasFormat = $datas->rowCount();
+    if(!isset($conditions['format']) || $conditions['format'] === 'rows') $datasFormat = $datas->fetchAll(PDO::FETCH_ASSOC);
+    elseif($conditions['format'] === 'oneRow') $datasFormat = $datas->fetch(PDO::FETCH_ASSOC);
+    elseif($conditions['format'] === 'nbRows') $datasFormat = $datas->rowCount();
     else $this->displayError(__CLASS__, __FUNCTION__, "Le format demandé doit être égal à 'oneRow', 'nbRows' ou NULL.");
 
     return $datasFormat;
