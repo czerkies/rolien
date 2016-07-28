@@ -1,11 +1,8 @@
 <?php
 
-class helloController extends renderController {
+class helloEstController extends renderController {
 
-  function world() {
-
-    $fileView['FOLDER'] = 'hello';
-    $fileView['FILE'] = 'world';
+  function worldTest() {
 
     $limit = '5';
 
@@ -25,7 +22,7 @@ class helloController extends renderController {
     echo "<hr>";
 
     $this->render(
-      $fileView,
+      array(__CLASS__, __FUNCTION__),
       array('hw' => $hw)
     );
 

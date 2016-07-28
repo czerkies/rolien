@@ -19,9 +19,9 @@ function connect() {
   ];
 
   return array(
-    'DSN' => 'mysql:host='.HOST.';dbname='.DBNAME.';',
-    'user' => USER,
-    'mdp' => MDP,
+    'DSN' => 'mysql:host=' . PARAM_DB[0] . ';dbname=' . PARAM_DB[1] . ';',
+    'user' => PARAM_DB[2],
+    'mdp' => PARAM_DB[3],
     'options' => $options
   );
 

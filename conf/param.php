@@ -6,7 +6,9 @@
 *
 */
 
-define('HOST', 'localhost'); // DSN
-define('DBNAME', 'rolien'); // Nom de la base
-define('USER', 'root'); // Utilisateur
-define('MDP', 'root'); // Mot de passe
+define('PARAM_DB',[
+  'localhost', //DSN
+  'rolien', // Nom de la base
+  'root', // Utilisateur
+  'root' // Mot de passe
+]);
