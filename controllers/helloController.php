@@ -1,8 +1,8 @@
 <?php
 
-class helloEstController extends renderController {
+class helloController extends superController {
 
-  function worldTest() {
+  public function worldTest() {
 
     $limit = '5';
 
@@ -13,8 +13,8 @@ class helloEstController extends renderController {
         /*'where' => "word = 'hello'",
         'limit' => $limit,
         'orderby' => 'word',
-        'order' => 'desc',
-        'format' => 'rows'*/
+        'order' => 'desc',*/
+        'format' => 'rows'
       )
     );
 
