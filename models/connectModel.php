@@ -29,7 +29,7 @@ class connectModel extends superController {
 
     } catch(PDOException $e) {
 
-      echo 'Connexion échouée : ' . $e->getMessage();
+      $this->displayError(__CLASS__, __FUNCTION__, 'Connexion échouée : ' . $e->getMessage());
 
     }
 
