@@ -11,8 +11,6 @@
  */
 class queryModel extends connectModel {
 
-  private $table;
-
   public function __construct($table) {
     $this->table = $table;
   }
@@ -59,6 +57,7 @@ class queryModel extends connectModel {
         else $this->displayError(__CLASS__, __FUNCTION__, "'order' doit être égal à 'DESC' ou 'ASC'.");
 
       }
+      
     }
 
     // Vérification limit
