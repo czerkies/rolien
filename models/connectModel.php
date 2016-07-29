@@ -5,14 +5,14 @@
  *
  * Communique à toutes les autres class 'modele' la connexion à la base de données via PDO.
  *
- * @version Release: v1.0.0
+ * @version v11.0.0
  * @link http://romanczerkies.fr/
- * @since Class available since Release v1.0.0-alpha.1
+ * @since v11.0.0-alpha.1
  */
 class connectModel extends superController {
 
   /**
-  * Fonction de connection à la bdd prenant compte des parametres de param.php
+  * Fonction de connection à la bdd prenant compte les parametres de param.php
   *
   * @param
   * @return Object $pdo Instance de la connexion via PDO
@@ -26,12 +26,12 @@ class connectModel extends superController {
       PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8, lc_time_names = \'fr_FR\''
     ];
 
-    $donneesDB = array(
+    $donneesDB = [
       'DSN' => 'mysql:host=' . PARAM_DB[0] . ';dbname=' . PARAM_DB[1] . ';',
       'user' => PARAM_DB[2],
       'mdp' => PARAM_DB[3],
       'options' => $options
-    );
+    ];
 
     try {
 
