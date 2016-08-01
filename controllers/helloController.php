@@ -4,27 +4,57 @@ class helloController extends superController {
 
   public function worldTest() {
 
-    $limit = '5';
+    //$meta['title'] = 'Hello Word';
+    $meta['description'] = 'Test';
+    $meta['current_menu'] = '';
+
+    $limit = 5;
 
     $word = new queryModel('test');
-    $hw = $word->selectDB(
-      array(
+    $hw = $word->read(
+      [
         'column' => 'word',
-        /*'where' => "word = 'hello'",
-        'limit' => $limit,
+        //'where' => "word = 'world'",
+        /*'limit' => $limit,
         'orderby' => 'word',
         'order' => 'desc',*/
-        'format' => 'rows'
-      )
+        //'format' => 'rows'
+      ]
     );
 
     var_dump($hw);
     echo "<hr>";
 
     $this->render(
-      array(__CLASS__, __FUNCTION__),
-      array('hw' => $hw)
+      [__CLASS__, __FUNCTION__],
+      ['hw' => $hw, 'meta' => $meta]
     );
+
+  }
+
+  public function page() {
+
+    if(isset($_GET['page'])) {
+
+      $limit = 5;
+
+      $datas = new queryModel('pages');
+      $meta = $datas->read(
+        [
+          'where' => 'file_name = "' . $_GET['page'] . '"',
+          'format' => 'oneRow'
+        ]
+      );
+
+      var_dump($meta);
+      echo "<hr>";
+
+      $this->render(
+        [__CLASS__, $meta['file_name']],
+        ['meta' => $meta]
+      );
+
+    }
 
   }
 

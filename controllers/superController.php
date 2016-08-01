@@ -22,6 +22,14 @@ class superController {
     $folder = $this->methodToFile($fileView[0]);
     $file = $this->methodToFile($fileView[1]);
 
+    // Vérification de la présence des meta.
+    if(!isset($variables['meta']['title'])
+    || empty($variables['meta']['title'])) $this->displayError(NULL, NULL, "La meta 'title' est manquante");
+
+    if(!isset($variables['meta']['description'])
+    || empty($variables['meta']['description'])) $this->displayError(NULL, NULL, "La meta 'description' est manquante");
+
+
     if(file_exists('../views/' . $folder . '/' . $file . '.php')) {
 
       extract($variables);
@@ -59,12 +67,16 @@ class superController {
 
   }
 
-  public function displayError($class, $function, $explain = NULL) {
+  public function displayError($class = NULL, $function = NULL, $explain = NULL) {
 
-    $error = 'Erreur dans la fonction <b>' . $function . '</b> de la class <b>' . $class . '</b>.<br>';
+    $error = '';
+
+    if($class !== NULL || $function !== NULL) $error .= 'Erreur dans la fonction <b>' . $function . '</b> de la class <b>' . $class . '</b>.<br>';
     if($explain) $error .= 'Informations : ' . $explain;
 
-    if(LOG) die($error);
+    $error .= '<hr>';
+
+    if(LOG) echo $error;
 
   }
 
