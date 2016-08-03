@@ -5,9 +5,9 @@
  *
  * Rend et gère l'affichage de la page demandé via le routeur.
  *
- * @version Release: v1.0.0
+ * @version v11.0.0
  * @link http://romanczerkies.fr/
- * @since Class available since Release v1.0.0-alpha.1
+ * @since v11.0.0-alpha.1
  */
 class superController {
 
@@ -19,24 +19,30 @@ class superController {
   */
   public function render($fileView = array(), $variables = array()) {
 
+    session_start();
+
     $folder = $this->methodToFile($fileView[0]);
     $file = $this->methodToFile($fileView[1]);
 
-    // Vérification de la présence des meta.
-    if(!isset($variables['meta']['title'])
-    || empty($variables['meta']['title'])) $this->displayError(NULL, NULL, "La meta 'title' est manquante");
+    $datas = new superModel();
+    $meta = $datas->metaDatas($file, $meta ?? NULL);
 
-    if(!isset($variables['meta']['description'])
-    || empty($variables['meta']['description'])) $this->displayError(NULL, NULL, "La meta 'description' est manquante");
+    $userStatus = 0; // À récupérer en BDD
 
+    $message = "Non autorisé";
+
+    extract($variables);
 
     if(file_exists('../views/' . $folder . '/' . $file . '.php')) {
 
-      extract($variables);
-
       ob_start();
-      include('../views/' . $folder . '/' . $file . '.php');
-      $buffer = ob_get_contents();
+
+      include '../views/' . $folder . '/' . $file . '.php';
+
+      $buffer = (isset($meta['restriction']) && $meta['restriction'] > $userStatus)
+      ? $message
+      : ob_get_contents();
+
       ob_end_clean();
 
       include '../views/template.php';
@@ -52,6 +58,7 @@ class superController {
   public function methodToFile($value) {
 
     $file = '';
+
     foreach (preg_split('/(?=[A-Z])/', $value) as $key => $value) {
 
       if($value != 'Controller') {
