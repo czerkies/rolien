@@ -9,7 +9,7 @@
  * @link http://romanczerkies.fr/
  * @since v11.0.0-alpha.1
  */
-class connectModel extends superController {
+class superModel extends superController {
 
   /**
   * Fonction de connection à la bdd prenant compte les parametres de param.php
@@ -40,6 +40,25 @@ class connectModel extends superController {
     } catch(PDOException $e) {
 
       $this->displayError(__CLASS__, __FUNCTION__, 'Connexion échouée : ' . $e->getMessage());
+
+    }
+
+  }
+
+  public function metaDatas($file, $meta) {
+
+    $sql = "SELECT title, description, restriction FROM pages WHERE file_name = '$file'";
+    $datas = $this->pdo()->query($sql);
+    $datasPage = $datas->fetch(PDO::FETCH_ASSOC);
+
+    if(!$datasPage) {
+
+      $this->displayError(__CLASS__, __FUNCTION__, "Votre valeur 'file_name' en base de données doit avoir le même nom que votre fichier.");
+
+    } else {
+
+      foreach ($datasPage as $key => $value) if(!isset($meta[$key]) || empty($meta[$key])) $meta[$key] = $value;
+      return $meta;
 
     }
 

@@ -9,7 +9,7 @@
  * @link http://romanczerkies.fr/
  * @since v11.0.0-alpha.1
  */
-class queryModel extends connectModel {
+class queryModel extends superModel {
 
   public function __construct($table) {
     $this->table = $table;
@@ -73,8 +73,6 @@ class queryModel extends connectModel {
       else $this->displayError(__CLASS__, __FUNCTION__, "'limit' doit être un chiffre entier.");
 
     }
-
-    echo $sql.'<br>'; // supp
 
     $datas = $this->pdo()->query($sql);
 
