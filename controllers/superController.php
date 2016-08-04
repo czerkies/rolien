@@ -17,32 +17,36 @@ class superController {
   * @param Array $fileView Chemin du fichier à afficher
   * @return
   */
-  public function render($fileView = array(), $variables = array()) {
+  public function render($fileView = array(), $meta = NULL, $vars) {
 
     session_start();
 
     $folder = $this->methodToFile($fileView[0]);
     $file = $this->methodToFile($fileView[1]);
 
-    $datas = new superModel();
+    $datas = new superModel;
     $meta = $datas->metaDatas($file, $meta ?? NULL);
 
-    $userStatus = 0; // À récupérer en BDD
+    $userStatus = $_SESSION['membre']['status'] ?? 0;
 
-    $message = "Non autorisé";
-
-    extract($variables);
+    extract($vars);
 
     if(file_exists('../views/' . $folder . '/' . $file . '.php')) {
 
       ob_start();
 
-      include '../views/' . $folder . '/' . $file . '.php';
+      if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) {
 
-      $buffer = (isset($meta['restriction']) && $meta['restriction'] > $userStatus)
-      ? $message
-      : ob_get_contents();
+        $meta['title'] = 'Page non autorisé';
+        $meta['description'] = 'Page non autorisé';
+        include '../views/errors/restriction.php';
 
+      } else {
+
+        include '../views/' . $folder . '/' . $file . '.php';
+
+      }
+      $buffer = ob_get_contents();
       ob_end_clean();
 
       include '../views/template.php';
@@ -78,7 +82,7 @@ class superController {
 
     $error = '';
 
-    if($class !== NULL || $function !== NULL) $error .= 'Erreur dans la fonction <b>' . $function . '</b> de la class <b>' . $class . '</b>.<br>';
+    if($class !== NULL || $function !== NULL) $error .= 'Erreur dans la method <b>' . $function . '</b> de la class <b>' . $class . '</b>.<br>';
     if($explain) $error .= 'Informations : ' . $explain;
 
     $error .= '<hr>';

@@ -4,9 +4,10 @@ class helloController extends superController {
 
   public function worldTest() {
 
-    //$meta['title'] = 'Titre tout neuf imposé';
+    //$meta['title'] = '';
     //$meta['description'] = 'Test';
     //$meta['current_menu'] = '';
+    //$meta['restriction'] = 0;
 
     $limit = 5;
 
@@ -22,12 +23,10 @@ class helloController extends superController {
       ]
     );
 
-    /*var_dump($hw);
-    echo "<hr>";*/
-
     $this->render(
       [__CLASS__, __FUNCTION__],
-    ['hw' => $hw]//'meta' => $meta]
+      $meta ?? NULL,
+      ['hw' => $hw]
     );
 
   }
