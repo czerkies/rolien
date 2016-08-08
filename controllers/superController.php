@@ -78,6 +78,15 @@ class superController {
 
   }
 
+  /**
+  * Method permettant d'afficher une erreur survenue lors de son appel dans le framework.
+  * Peut-être désactivé dans le 'param.php' en passant la valeur 'LOG' à 'FALSE'.
+  *
+  * @param String $class Récupère le nom de la class.
+  * @param String $function Récupère le nom de la method.
+  * @param String $explain Text d'explication de l'erreur.
+  * @return String $error (echo)
+  */
   public function displayError($class = NULL, $function = NULL, $explain = NULL) {
 
     $error = '';

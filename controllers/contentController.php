@@ -1,8 +1,21 @@
 <?php
 
-class helloController extends superController {
+class contentController extends superController {
 
-  public function worldTest() {
+  public function videos() {
+
+    $uve = NULL;
+
+    if(isset($_GET['uve'])) {
+
+      if($_GET['uve'] === 'une-vie-en-169-15') {
+
+        $uve = "Lecture en cours 15";
+        $meta['title'] = "Une vie en 16/9 #15";
+
+      }
+
+    }
 
     //$meta['title'] = '';
     //$meta['description'] = 'Test';
@@ -26,7 +39,7 @@ class helloController extends superController {
     $this->render(
       [__CLASS__, __FUNCTION__],
       $meta ?? NULL,
-      ['hw' => $hw]
+      ['hw' => $hw, 'uve' => $uve]
     );
 
   }
