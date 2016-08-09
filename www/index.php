@@ -35,4 +35,10 @@ if(isset($_GET['controller']) && !empty($_GET['controller'])
 
     }
 
-}
+  } else {
+
+    include('../controllers/contentController.php');
+    $instance = new contentController();
+    $instance->videos();
+
+  }
