@@ -1,5 +1,4 @@
 <?php
-
 function autoloader($class){
 
   if(strpos($class, 'Controller') !== FALSE){
@@ -39,6 +38,6 @@ if(isset($_GET['controller']) && !empty($_GET['controller'])
 
     include('../controllers/contentController.php');
     $instance = new contentController();
-    $instance->videos();
+    $instance->home();
 
   }

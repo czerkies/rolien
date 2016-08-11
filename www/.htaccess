@@ -1,3 +1,6 @@
-RewriteEngine On
+RewriteEngine on
 
-RewriteRule ^(.*)/(.*)/ index.php?controller=content&method=videos&$1=$2 [QSA,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteRule ^$ index.php?controller=content&method=home [L]
+RewriteRule ^(.*)$ index.php?controller=content&method=videos&url=$1 [QSA,L]
