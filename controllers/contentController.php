@@ -2,16 +2,30 @@
 
 class contentController extends superController {
 
+  public function __construct($url) {
+    $this->_url = $url;
+  }
+
   public function videos() {
 
     $uve = NULL;
 
-    if(isset($_GET['uve'])) {
+    echo "<pre>";
+    var_dump($this->_url);
+    echo "</pre>";
 
-      if($_GET['uve'] === 'une-vie-en-169-15') {
+    if(isset($this->_url[0]) && !empty($this->_url[0])) {
 
-        $uve = "Lecture en cours 15";
+      $meta['title'] = 'Une vie en 16/9';
+
+      if(isset($this->_url[1]) && $this->_url[1] === '15') {
+
+        $datas['uve'] = "Lecture en cours 15";
         $meta['title'] = "Une vie en 16/9 #15";
+
+      } else {
+
+        $datas['uve'] = "Liste du content";
 
       }
 
@@ -25,7 +39,7 @@ class contentController extends superController {
     $limit = 5;
 
     $word = new queryModel('test');
-    $hw = $word->read(
+    $datas['hw'] = $word->read(
       [
         'column' => 'word',
         //'where' => "word = 'world'",
@@ -36,10 +50,32 @@ class contentController extends superController {
       ]
     );
 
-    $this->render(
+    return [
+      'datas' => $datas,
+      'meta' => $meta
+    ];
+    /*$this->render(
       [__CLASS__, __FUNCTION__],
       $meta ?? NULL,
       ['hw' => $hw, 'uve' => $uve]
+    );*/
+
+  }
+
+  public function home() {
+
+    $vars['text'] = 'Test';
+
+    return $vars;
+
+  }
+
+  public function aPropos() {
+
+    $this->render(
+      [__CLASS__, __FUNCTION__],
+      $meta ?? NULL,
+      []
     );
 
   }

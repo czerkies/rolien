@@ -17,9 +17,9 @@ class superController {
   * @param Array $fileView Chemin du fichier à afficher
   * @return
   */
-  public function render($fileView = array(), $meta = NULL, $vars) {
+  public function render($fileView = array(), $meta = NULL, $vars = array()) {
 
-    session_start();
+    //session_start();
 
     $folder = $this->methodToFile($fileView[0]);
     $file = $this->methodToFile($fileView[1]);
@@ -54,6 +54,38 @@ class superController {
     } else {
 
       $this->displayError(__CLASS__, __FUNCTION__, "Le dossier doit correspondre à votre 'Class' et votre Fichier doit correspondre à votre 'Function'.");
+
+    }
+
+  }
+
+  public function dispatch() {
+
+    if(isset($_GET['url']) && !empty($_GET['url'])) {
+
+      $url = explode('/', trim($_GET['url'], '/'));
+
+      $content = new contentController($url);
+      $datas = new superModel();
+
+      $meta = $datas->metaDatas($url[0]);
+
+      if($meta) {
+
+        $vars = $content->{$meta['function']}();
+
+      } else {
+
+        $meta = $datas->metaDatas('home');
+        $vars = $content->home();
+
+      }
+
+      $this->render(
+        ['content', $meta['file_name']],
+        $meta = $vars['meta'],
+        $vars = $vars['datas']
+      );
 
     }
 
