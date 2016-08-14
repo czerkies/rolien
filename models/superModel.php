@@ -45,15 +45,17 @@ class superModel extends superController {
 
   }
 
-  public function metaDatas($file, $meta) {
+  public function metaDatas($file, $meta = NULL) {
 
-    $sql = "SELECT title, description, restriction FROM pages WHERE file_name = '$file'";
+    $sql = "SELECT file_name, title, description, restriction, function FROM pages WHERE file_name = '$file'";
     $datas = $this->pdo()->query($sql);
     $datasPage = $datas->fetch(PDO::FETCH_ASSOC);
 
     if(!$datasPage) {
 
-      $this->displayError(__CLASS__, __FUNCTION__, "Votre valeur 'file_name' en base de données doit avoir le même nom que votre fichier.");
+      //$this->displayError(__CLASS__, __FUNCTION__, "Votre valeur 'file_name' en base de données doit avoir le même nom que votre fichier.");
+
+      return false;
 
     } else {
 
@@ -63,5 +65,11 @@ class superModel extends superController {
     }
 
   }
+
+  /*public function rootDB() {
+
+    $sql = "SELECT * FROM pages WHERE file_name = ''"
+
+  }*/
 
 }
