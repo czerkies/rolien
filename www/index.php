@@ -1,5 +1,5 @@
 <?php
-function autoloader($class){
+function autoloader($class) {
 
   if(strpos($class, 'Controller') !== FALSE){
     if(file_exists('../controllers/'.$class.'.php')){
@@ -17,8 +17,12 @@ function autoloader($class){
 
 spl_autoload_register('autoloader');
 
-if(isset($_GET['controller']) && !empty($_GET['controller'])
-  && isset($_GET['method']) && !empty($_GET['method'])){
+include('../controllers/superController.php');
+$instance = new superController();
+$instance->dispatch();
+
+/*if(isset($_GET['controller']) && !empty($_GET['controller'])
+  && isset($_GET['method']) && !empty($_GET['method'])) {
 
     $controller = htmlentities($_GET['controller']);
     $method = htmlentities($_GET['method']);
@@ -34,10 +38,10 @@ if(isset($_GET['controller']) && !empty($_GET['controller'])
 
     }
 
-  } else {
+  }/* else {
 
     include('../controllers/contentController.php');
     $instance = new contentController();
     $instance->home();
 
-  }
+  }*/
