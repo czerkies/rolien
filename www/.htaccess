@@ -2,7 +2,7 @@ RewriteEngine on
 
 RewriteCond %{REQUEST_FILENAME} !-f
 
-RewriteRule ^$ index.php?controller=super&method=dispatch [L]
+RewriteRule ^$ index.php?controller=super&method=dispatch&url=home [L]
 RewriteRule ^(.*)$ index.php?controller=super&method=dispatch&url=$1 [QSA,L]
 
 #RewriteRule ^a-propos/$ index.php?controller=content&method=aPropos [L]
