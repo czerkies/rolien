@@ -5,3 +5,5 @@
   <p><?= $uve; ?></p>
 
 <?php endif; ?>
+
+<?php if(isset($datas['test'])) echo $datas['test']; ?>
