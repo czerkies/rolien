@@ -8,11 +8,13 @@ class contentController extends superController {
 
   public function videos() {
 
+    if(isset($_GET['test'])) $datas['test'] = 'test';
+
     $uve = NULL;
 
-    echo "<pre>";
+    /*echo "<pre>";
     var_dump($this->_url);
-    echo "</pre>";
+    echo "</pre>";*/
 
     if(isset($this->_url[0]) && !empty($this->_url[0])) {
 

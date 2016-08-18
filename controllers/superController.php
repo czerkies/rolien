@@ -21,17 +21,17 @@ class superController {
 
     //session_start();
 
-    $folder = $this->methodToFile($fileView[0]);
-    $file = $this->methodToFile($fileView[1]);
+    /*$folder = $this->methodToFile($fileView[0]);
+    $file = $this->methodToFile($fileView[1]);*/
 
-    $datas = new superModel;
-    $meta = $datas->metaDatas($file, $meta ?? NULL);
+    /*$datas = new superModel;
+    $meta = $datas->metaDatas($file, $meta ?? NULL);*/
 
     $userStatus = $_SESSION['membre']['status'] ?? 0;
 
-    extract($vars);
+    if(isset($vars)) extract($vars);
 
-    if(file_exists('../views/' . $folder . '/' . $file . '.php')) {
+    if(file_exists('../views/' . $fileView[0] . '/' . $fileView[1] . '.php')) {
 
       ob_start();
 
@@ -43,7 +43,7 @@ class superController {
 
       } else {
 
-        include '../views/' . $folder . '/' . $file . '.php';
+        include '../views/' . $fileView[0] . '/' . $fileView[1] . '.php';
 
       }
       $buffer = ob_get_contents();
@@ -70,28 +70,41 @@ class superController {
 
       $meta = $datas->metaDatas($url[0]);
 
+      echo "<pre>";
+      var_dump($meta);
+
       if($meta) {
 
-        $vars = $content->{$meta['function']}();
+        $datasContent = $content->{$meta['function']}();
+
+        $metaPage = $datasContent['meta'] ?? NULL;
+        $vars = $datasContent['datas'] ?? NULL;
+
+        foreach ($meta as $key => $value) if(!isset($metaPage[$key])) $meta[$key] = $value;
 
       } else {
 
         $meta = $datas->metaDatas('home');
+        $metaPage = $datasContent['meta'] ?? NULL;
         $vars = $content->home();
 
       }
 
+      var_dump($metaPage);
+      echo "<hr>";
+      var_dump($vars);
+
       $this->render(
-        ['content', $meta['file_name']],
-        $meta = $vars['meta'],
-        $vars = $vars['datas']
+        [$meta['folder'], $meta['file_name']],
+        $metaPage,
+        $vars
       );
 
     }
 
   }
 
-  public function methodToFile($value) {
+  /*public function methodToFile($value) {
 
     $file = '';
 
@@ -108,7 +121,7 @@ class superController {
 
     return $file;
 
-  }
+  }*/
 
   /**
   * Method permettant d'afficher une erreur survenue lors de son appel dans le framework.
