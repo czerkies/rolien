@@ -27,7 +27,9 @@ class superController {
     /*$datas = new superModel;
     $meta = $datas->metaDatas($file, $meta ?? NULL);*/
 
-    $userStatus = $_SESSION['membre']['status'] ?? 0;
+    //var_dump($fileView);
+
+    //$userStatus = $_SESSION['membre']['status'] ?? 1;
 
     if(isset($vars)) extract($vars);
 
@@ -35,17 +37,17 @@ class superController {
 
       ob_start();
 
-      if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) {
+      /*if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) {
 
         $meta['title'] = 'Page non autorisé';
         $meta['description'] = 'Page non autorisé';
         include '../views/errors/restriction.php';
 
-      } else {
+      } else {*/
 
         include '../views/' . $fileView[0] . '/' . $fileView[1] . '.php';
 
-      }
+      //}
       $buffer = ob_get_contents();
       ob_end_clean();
 
@@ -70,29 +72,23 @@ class superController {
 
       $meta = $datas->metaDatas($url[0]);
 
-      echo "<pre>";
-      var_dump($meta);
+      if($meta['function']) $datasContent = $content->{$meta['function']}();
 
-      if($meta) {
+      $metaPage = $datasContent['meta'] ?? NULL;
+      $vars = $datasContent['datas'] ?? NULL;
 
-        $datasContent = $content->{$meta['function']}();
+      foreach ($meta as $key => $value) if(!isset($metaPage[$key])) $metaPage[$key] = $value;
 
-        $metaPage = $datasContent['meta'] ?? NULL;
-        $vars = $datasContent['datas'] ?? NULL;
+      $userStatus = $_SESSION['membre']['status'] ?? 1;
 
-        foreach ($meta as $key => $value) if(!isset($metaPage[$key])) $meta[$key] = $value;
+      if($meta['restriction'] > $userStatus) {
 
-      } else {
-
-        $meta = $datas->metaDatas('home');
-        $metaPage = $datasContent['meta'] ?? NULL;
-        $vars = $content->home();
+        $meta['title'] = 'Page non autorisé';
+        $meta['description'] = 'Page non autorisé';
+        $meta['folder'] = 'errors';
+        $meta['file_name'] = 'restriction';
 
       }
-
-      var_dump($metaPage);
-      echo "<hr>";
-      var_dump($vars);
 
       $this->render(
         [$meta['folder'], $meta['file_name']],

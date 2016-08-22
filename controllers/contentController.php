@@ -12,10 +12,6 @@ class contentController extends superController {
 
     $uve = NULL;
 
-    /*echo "<pre>";
-    var_dump($this->_url);
-    echo "</pre>";*/
-
     if(isset($this->_url[0]) && !empty($this->_url[0])) {
 
       $meta['title'] = 'Une vie en 16/9';
@@ -56,19 +52,16 @@ class contentController extends superController {
       'datas' => $datas,
       'meta' => $meta
     ];
-    /*$this->render(
-      [__CLASS__, __FUNCTION__],
-      $meta ?? NULL,
-      ['hw' => $hw, 'uve' => $uve]
-    );*/
 
   }
 
   public function home() {
 
-    $vars['text'] = 'Test';
+    $datas['text'] = 'Test';
 
-    return $vars;
+    return [
+      'datas' => $datas
+    ];
 
   }
 
