@@ -63,40 +63,36 @@ class superController {
 
   public function dispatch() {
 
-    if(isset($_GET['url']) && !empty($_GET['url'])) {
+    $url = explode('/', trim($_GET['url'], '/'));
 
-      $url = explode('/', trim($_GET['url'], '/'));
+    $content = new contentController($url);
+    $datas = new superModel();
 
-      $content = new contentController($url);
-      $datas = new superModel();
+    $meta = $datas->metaDatas($url[0]);
 
-      $meta = $datas->metaDatas($url[0]);
+    if($meta['function']) $datasContent = $content->{$meta['function']}();
 
-      if($meta['function']) $datasContent = $content->{$meta['function']}();
+    $metaPage = $datasContent['meta'] ?? NULL;
+    $vars = $datasContent['datas'] ?? NULL;
 
-      $metaPage = $datasContent['meta'] ?? NULL;
-      $vars = $datasContent['datas'] ?? NULL;
+    foreach ($meta as $key => $value) if(!isset($metaPage[$key])) $metaPage[$key] = $value;
 
-      foreach ($meta as $key => $value) if(!isset($metaPage[$key])) $metaPage[$key] = $value;
+    $userStatus = $_SESSION['membre']['status'] ?? 0;
 
-      $userStatus = $_SESSION['membre']['status'] ?? 1;
+    if($meta['restriction'] > $userStatus) {
 
-      if($meta['restriction'] > $userStatus) {
-
-        $meta['title'] = 'Page non autorisé';
-        $meta['description'] = 'Page non autorisé';
-        $meta['folder'] = 'errors';
-        $meta['file_name'] = 'restriction';
-
-      }
-
-      $this->render(
-        [$meta['folder'], $meta['file_name']],
-        $metaPage,
-        $vars
-      );
+      $meta['title'] = 'Page non autorisé';
+      $meta['description'] = 'Page non autorisé';
+      $meta['folder'] = 'errors';
+      $meta['file_name'] = 'restriction';
 
     }
+
+    $this->render(
+      [$meta['folder'], $meta['file_name']],
+      $metaPage,
+      $vars
+    );
 
   }
 

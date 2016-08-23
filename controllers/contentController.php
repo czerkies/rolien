@@ -8,11 +8,14 @@ class contentController extends superController {
 
   public function videos() {
 
+    // Récupération des données par cat.
+    // Si une _url[1] est présente, lancer la fonction de récupération de cet article.
+
     if(isset($_GET['test'])) $datas['test'] = 'test';
 
     $uve = NULL;
 
-    if(isset($this->_url[0]) && !empty($this->_url[0])) {
+    if(isset($this->_url[0]) && !empty($this->_url[0]) && $this->_url[0] === 'une-vie-en-169') {
 
       $meta['title'] = 'Une vie en 16/9';
 
@@ -34,7 +37,7 @@ class contentController extends superController {
     //$meta['current_menu'] = '';
     //$meta['restriction'] = 0;
 
-    $limit = 5;
+    $limit = 2;
 
     $word = new queryModel('test');
     $datas['hw'] = $word->read(
@@ -66,12 +69,6 @@ class contentController extends superController {
   }
 
   public function aPropos() {
-
-    $this->render(
-      [__CLASS__, __FUNCTION__],
-      $meta ?? NULL,
-      []
-    );
 
   }
 
