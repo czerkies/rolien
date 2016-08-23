@@ -1,4 +1,4 @@
-<h1><?php foreach ($hw as $value) echo $value['word']; ?></h1>
+<h1><?php if(isset($hw)) foreach ($hw as $value) echo $value['word']; ?></h1>
 
 <?php if($uve): ?>
 
