@@ -17,9 +17,13 @@ function autoloader($class) {
 
 spl_autoload_register('autoloader');
 
-include('../controllers/superController.php');
-$instance = new superController();
-$instance->dispatch();
+if(isset($_GET['url']) && !empty($_GET['url'])) {
+
+  include('../controllers/superController.php');
+  $instance = new superController();
+  $instance->dispatch();
+
+}
 
 /*if(isset($_GET['controller']) && !empty($_GET['controller'])
   && isset($_GET['method']) && !empty($_GET['method'])) {
