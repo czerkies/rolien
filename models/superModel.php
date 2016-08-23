@@ -45,14 +45,14 @@ class superModel extends superController {
 
   }
 
-  public function metaDatas($file) {
+  public function metaDatas($url) {
 
-    $sqlVerif = "SELECT file_name FROM pages WHERE file_name = '$file'";
+    $sqlVerif = "SELECT url FROM pages WHERE url = '$url'";
     $exist = $this->pdo()->query($sqlVerif);
 
-    if(!$exist->rowCount()) $file = '400';
+    if(!$exist->rowCount()) $url = '400';
 
-    $sql = "SELECT file_name, folder, title, description, restriction, function FROM pages WHERE file_name = '$file'";
+    $sql = "SELECT file_name, folder, title, description, restriction, function FROM pages WHERE url = '$url'";
     $datas = $this->pdo()->query($sql);
 
     return $datasPage = $datas->fetch(PDO::FETCH_ASSOC);
