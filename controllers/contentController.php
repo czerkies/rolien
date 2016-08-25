@@ -8,21 +8,23 @@ class contentController extends superController {
 
   public function videos() {
 
+    $page = new superModel();
+
     // Récupération des données par cat.
     // Si une _url[1] est présente, lancer la fonction de récupération de cet article.
 
-    if(isset($_GET['test'])) $datas['test'] = 'test';
-
     $uve = NULL;
 
-    if(isset($this->_url[0]) && !empty($this->_url[0]) && $this->_url[0] === 'une-vie-en-169') {
+    if(isset($this->_url[0]) && !empty($this->_url[0])) {
 
-      $meta['title'] = 'Une vie en 16/9';
+      //$meta['title'] = 'Une vie en 16/9';
 
-      if(isset($this->_url[1]) && $this->_url[1] === '15') {
+      if(isset($this->_url[1])) $datasVid = $page->metaDatas($this->_url[1]);
 
-        $datas['uve'] = "Lecture en cours 15";
-        $meta['title'] = "Une vie en 16/9 #15";
+      if(isset($this->_url[1]) && $datasVid !== FALSE) {
+
+        $datas['uve'] = $datasVid['description'];
+        $meta['title'] = $datasVid['title'];
 
       } else {
 
@@ -50,6 +52,8 @@ class contentController extends superController {
         //'format' => 'rows'
       ]
     );
+
+    $meta = $meta ?? NULL;
 
     return [
       'datas' => $datas,

@@ -70,7 +70,18 @@ class superController {
 
     $meta = $datas->metaDatas($url[0]);
 
-    if($meta['function']) $datasContent = $content->{$meta['function']}();
+    //var_dump($meta);
+    //var_dump(method_exists('contentController', $meta['function']));
+
+    if(isset($meta['function']) && method_exists('contentController', $meta['function']) === TRUE) {
+      $datasContent = $content->{$meta['function']}();
+    }
+
+    // @TODO S'il manque le folder et file_name
+    if(empty($meta['folder']) || empty($meta['file_name'])) {
+      $meta['folder'] = 'errors';
+      $meta['file_name'] = '400';
+    }
 
     $metaPage = $datasContent['meta'] ?? NULL;
     $vars = $datasContent['datas'] ?? NULL;
@@ -79,6 +90,7 @@ class superController {
 
     $userStatus = $_SESSION['membre']['status'] ?? 0;
 
+    // @TODO Si le user est non autorisé.
     if($meta['restriction'] > $userStatus) {
 
       $meta['title'] = 'Page non autorisé';
