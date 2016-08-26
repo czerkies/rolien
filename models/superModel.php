@@ -45,22 +45,17 @@ class superModel extends superController {
 
   }
 
-  public function metaDatas($file, $meta) {
+  public function metaDatas($url) {
 
-    $sql = "SELECT title, description, restriction FROM pages WHERE file_name = '$file'";
+    $sqlVerif = "SELECT url FROM pages WHERE url = '$url'";
+    $exist = $this->pdo()->query($sqlVerif);
+
+    if(!$exist->rowCount()) $url = '400';
+
+    $sql = "SELECT file_name, folder, title, description, restriction, function FROM pages WHERE url = '$url'";
     $datas = $this->pdo()->query($sql);
-    $datasPage = $datas->fetch(PDO::FETCH_ASSOC);
 
-    if(!$datasPage) {
-
-      $this->displayError(__CLASS__, __FUNCTION__, "Votre valeur 'file_name' en base de données doit avoir le même nom que votre fichier.");
-
-    } else {
-
-      foreach ($datasPage as $key => $value) if(!isset($meta[$key]) || empty($meta[$key])) $meta[$key] = $value;
-      return $meta;
-
-    }
+    return $datasPage = $datas->fetch(PDO::FETCH_ASSOC);
 
   }
 

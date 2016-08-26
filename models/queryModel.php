@@ -11,6 +11,8 @@
  */
 class queryModel extends superModel {
 
+  private $table;
+
   public function __construct($table) {
     $this->table = $table;
   }

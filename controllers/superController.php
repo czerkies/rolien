@@ -17,35 +17,37 @@ class superController {
   * @param Array $fileView Chemin du fichier à afficher
   * @return
   */
-  public function render($fileView = array(), $meta = NULL, $vars) {
+  public function render($fileView = array(), $meta = NULL, $vars = array()) {
 
-    session_start();
+    //session_start();
 
-    $folder = $this->methodToFile($fileView[0]);
-    $file = $this->methodToFile($fileView[1]);
+    /*$folder = $this->methodToFile($fileView[0]);
+    $file = $this->methodToFile($fileView[1]);*/
 
-    $datas = new superModel;
-    $meta = $datas->metaDatas($file, $meta ?? NULL);
+    /*$datas = new superModel;
+    $meta = $datas->metaDatas($file, $meta ?? NULL);*/
 
-    $userStatus = $_SESSION['membre']['status'] ?? 0;
+    //var_dump($fileView);
 
-    extract($vars);
+    //$userStatus = $_SESSION['membre']['status'] ?? 1;
 
-    if(file_exists('../views/' . $folder . '/' . $file . '.php')) {
+    if(isset($vars)) extract($vars);
+
+    if(file_exists('../views/' . $fileView[0] . '/' . $fileView[1] . '.php')) {
 
       ob_start();
 
-      if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) {
+      /*if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) {
 
         $meta['title'] = 'Page non autorisé';
         $meta['description'] = 'Page non autorisé';
         include '../views/errors/restriction.php';
 
-      } else {
+      } else {*/
 
-        include '../views/' . $folder . '/' . $file . '.php';
+        include '../views/' . $fileView[0] . '/' . $fileView[1] . '.php';
 
-      }
+      //}
       $buffer = ob_get_contents();
       ob_end_clean();
 
@@ -59,7 +61,54 @@ class superController {
 
   }
 
-  public function methodToFile($value) {
+  public function dispatch() {
+
+    $url = explode('/', trim($_GET['url'], '/'));
+
+    $content = new contentController($url);
+    $datas = new superModel();
+
+    $meta = $datas->metaDatas($url[0]);
+
+    //var_dump($meta);
+    //var_dump(method_exists('contentController', $meta['function']));
+
+    if(isset($meta['function']) && method_exists('contentController', $meta['function']) === TRUE) {
+      $datasContent = $content->{$meta['function']}();
+    }
+
+    // @TODO S'il manque le folder et file_name
+    if(empty($meta['folder']) || empty($meta['file_name'])) {
+      $meta['folder'] = 'errors';
+      $meta['file_name'] = '400';
+    }
+
+    $metaPage = $datasContent['meta'] ?? NULL;
+    $vars = $datasContent['datas'] ?? NULL;
+
+    foreach ($meta as $key => $value) if(!isset($metaPage[$key])) $metaPage[$key] = $value;
+
+    $userStatus = $_SESSION['membre']['status'] ?? 0;
+
+    // @TODO Si le user est non autorisé.
+    if($meta['restriction'] > $userStatus) {
+
+      $meta['title'] = 'Page non autorisé';
+      $meta['description'] = 'Page non autorisé';
+      $meta['folder'] = 'errors';
+      $meta['file_name'] = 'restriction';
+
+    }
+
+    $this->render(
+      [$meta['folder'], $meta['file_name']],
+      $metaPage,
+      $vars
+    );
+
+  }
+
+  /*public function methodToFile($value) {
 
     $file = '';
 
@@ -76,8 +125,17 @@ class superController {
 
     return $file;
 
-  }
+  }*/
 
+  /**
+  * Method permettant d'afficher une erreur survenue lors de son appel dans le framework.
+  * Peut-être désactivé dans le 'param.php' en passant la valeur 'LOG' à 'FALSE'.
+  *
+  * @param String $class Récupère le nom de la class.
+  * @param String $function Récupère le nom de la method.
+  * @param String $explain Text d'explication de l'erreur.
+  * @return String $error (echo)
+  */
   public function displayError($class = NULL, $function = NULL, $explain = NULL) {
 
     $error = '';
