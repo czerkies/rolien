@@ -69,7 +69,6 @@ class superController {
     $datas = new superModel();
 
     $meta = $datas->metaDatas($url[0]);
-
     //var_dump($meta);
     //var_dump(method_exists('contentController', $meta['function']));
 
@@ -83,15 +82,10 @@ class superController {
       $meta['file_name'] = '400';
     }
 
-    $metaPage = $datasContent['meta'] ?? NULL;
-    $vars = $datasContent['datas'] ?? NULL;
-
-    foreach ($meta as $key => $value) if(!isset($metaPage[$key])) $metaPage[$key] = $value;
-
     $userStatus = $_SESSION['membre']['status'] ?? 0;
 
     // @TODO Si le user est non autorisé.
-    if($meta['restriction'] > $userStatus) {
+    if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) {
 
       $meta['title'] = 'Page non autorisé';
       $meta['description'] = 'Page non autorisé';
@@ -99,6 +93,11 @@ class superController {
       $meta['file_name'] = 'restriction';
 
     }
+
+    $metaPage = $datasContent['meta'] ?? NULL;
+    $vars = $datasContent['datas'] ?? NULL;
+
+    foreach ($meta as $key => $value) if(!isset($metaPage[$key])) $metaPage[$key] = $value;
 
     $this->render(
       [$meta['folder'], $meta['file_name']],
