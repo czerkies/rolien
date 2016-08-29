@@ -61,6 +61,12 @@ class superController {
 
   }
 
+  /**
+  * Fonction permettant l'affichage dans le template.
+  *
+  * @param Array $fileView Chemin du fichier à afficher
+  * @return
+  */
   public function dispatch() {
 
     $url = explode('/', trim($_GET['url'], '/'));
@@ -72,26 +78,37 @@ class superController {
     //var_dump($meta);
     //var_dump(method_exists('contentController', $meta['function']));
 
+    if($meta) {
+
+      // @TODO S'il manque le folder et file_name
+      if(empty($meta['folder']) || empty($meta['file_name'])) {
+
+        // @TODO Condition d'appel à la fonction page errors.
+
+        //$meta = $datas->metaDatas($url[0]);
+
+      }
+
+      $userStatus = $_SESSION['membre']['status'] ?? 0;
+
+      // @TODO Si le user est non autorisé.
+      if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) {
+
+        //$meta['title'] = 'Page non autorisé';
+        //$meta['description'] = 'Page non autorisé';
+        //$meta['folder'] = 'errors';
+        //$meta['file_name'] = 'restriction';
+
+        echo __LINE__;
+
+        $meta = $datas->metaDatas('400');
+
+      }
+
+    }
+
     if(isset($meta['function']) && method_exists('contentController', $meta['function']) === TRUE) {
       $datasContent = $content->{$meta['function']}();
-    }
-
-    // @TODO S'il manque le folder et file_name
-    if(empty($meta['folder']) || empty($meta['file_name'])) {
-      $meta['folder'] = 'errors';
-      $meta['file_name'] = '400';
-    }
-
-    $userStatus = $_SESSION['membre']['status'] ?? 0;
-
-    // @TODO Si le user est non autorisé.
-    if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) {
-
-      $meta['title'] = 'Page non autorisé';
-      $meta['description'] = 'Page non autorisé';
-      $meta['folder'] = 'errors';
-      $meta['file_name'] = 'restriction';
-
     }
 
     $metaPage = $datasContent['meta'] ?? NULL;
