@@ -47,12 +47,30 @@ class superModel extends superController {
 
   public function metaDatas($url) {
 
-    /*$sqlVerif = "SELECT url FROM pages WHERE url = '$url'";
+    $sqlVerif = "SELECT url FROM pages WHERE url = '$url'";
     $exist = $this->pdo()->query($sqlVerif);
 
-    if(!$exist->rowCount()) $url = '400';*/
+    //if(!$exist->rowCount()) $url = '400';
+    if($exist->rowCount()) {
 
-    $sql = "SELECT file_name, folder, title, description, restriction, function FROM pages WHERE url = '$url'";
+      $sql = "SELECT file_name, folder, title, description, restriction, function FROM pages WHERE url = '$url'";
+      $datas = $this->pdo()->query($sql);
+
+      return $datasPage = $datas->fetch(PDO::FETCH_ASSOC);
+
+    } else {
+
+      self::contentErrors('400');
+
+    }
+
+
+  }
+
+  public function contentErrors($page) {
+
+    $sql = "SELECT folder, file_name, title, description FROM pages WHERE file_name = '$page'";
+
     $datas = $this->pdo()->query($sql);
 
     return $datasPage = $datas->fetch(PDO::FETCH_ASSOC);

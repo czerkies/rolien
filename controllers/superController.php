@@ -17,7 +17,7 @@ class superController {
   * @param Array $fileView Chemin du fichier à afficher
   * @return
   */
-  public function render($fileView = array(), $meta = NULL, $vars = array()) {
+  public function render($fileView = array(), $vars = array()) {
 
     //session_start();
 
@@ -27,7 +27,7 @@ class superController {
     /*$datas = new superModel;
     $meta = $datas->metaDatas($file, $meta ?? NULL);*/
 
-    //var_dump($fileView);
+    //var_dump($vars);
 
     //$userStatus = $_SESSION['membre']['status'] ?? 1;
 
@@ -67,7 +67,7 @@ class superController {
   * @param Array $fileView Chemin du fichier à afficher
   * @return
   */
-  public function dispatch() {
+  /*public function dispatch() {
 
     $url = explode('/', trim($_GET['url'], '/'));
 
@@ -75,37 +75,12 @@ class superController {
     $datas = new superModel();
 
     $meta = $datas->metaDatas($url[0]);
-    //var_dump($meta);
-    //var_dump(method_exists('contentController', $meta['function']));
 
-    if($meta) {
+    if(empty($meta['folder']) || empty($meta['file_name'])) $meta = $datas->contentErrors('400');
 
-      // @TODO S'il manque le folder et file_name
-      if(empty($meta['folder']) || empty($meta['file_name'])) {
+    $userStatus = $_SESSION['membre']['status'] ?? 0;
 
-        // @TODO Condition d'appel à la fonction page errors.
-
-        //$meta = $datas->metaDatas($url[0]);
-
-      }
-
-      $userStatus = $_SESSION['membre']['status'] ?? 0;
-
-      // @TODO Si le user est non autorisé.
-      if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) {
-
-        //$meta['title'] = 'Page non autorisé';
-        //$meta['description'] = 'Page non autorisé';
-        //$meta['folder'] = 'errors';
-        //$meta['file_name'] = 'restriction';
-
-        echo __LINE__;
-
-        $meta = $datas->metaDatas('400');
-
-      }
-
-    }
+    if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) $meta = $datas->contentErrors('restriction');
 
     if(isset($meta['function']) && method_exists('contentController', $meta['function']) === TRUE) {
       $datasContent = $content->{$meta['function']}();

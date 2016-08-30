@@ -2,10 +2,6 @@
 
 class contentController extends superController {
 
-  public function __construct($url) {
-    $this->_url = $url;
-  }
-
   public function videos() {
 
     $page = new superModel();
@@ -15,21 +11,17 @@ class contentController extends superController {
 
     $uve = NULL;
 
-    if(isset($this->_url[0]) && !empty($this->_url[0])) {
+    //$meta['title'] = 'Une vie en 16/9';
+    $datas['uve'] = "Liste du content";
 
-      //$meta['title'] = 'Une vie en 16/9';
-      $datas['uve'] = "Liste du content";
+    if(isset($this->_url[1])) {
 
-      if(isset($this->_url[1])) {
+      $datasVid = $page->metaDatas($this->_url[1]);
 
-        $datasVid = $page->metaDatas($this->_url[1]);
+      if($datasVid !== FALSE) {
 
-        if($datasVid !== FALSE) {
-
-          $datas['uve'] = $datasVid['description'];
-          $meta['title'] = $datasVid['title'];
-
-        }
+        $datas['uve'] = $datasVid['description'];
+        $meta['title'] = $datasVid['title'];
 
       }
 
@@ -43,7 +35,7 @@ class contentController extends superController {
     $limit = 2;
 
     $word = new queryModel('test');
-    $datas['hw'] = $word->read(
+    $hw = $word->read(
       [
         'column' => 'word',
         //'where' => "word = 'world'",
@@ -56,10 +48,10 @@ class contentController extends superController {
 
     $meta = $meta ?? NULL;
 
-    return [
-      'datas' => $datas,
-      'meta' => $meta
-    ];
+    $this->render(
+      ['content', 'videos'],
+      ['hw' => $hw, 'uve' => $uve]
+    );
 
   }
 
@@ -68,7 +60,7 @@ class contentController extends superController {
     $datas['text'] = 'Test';
 
     return [
-      'datas' => $datas
+      'datas' => $datas,
     ];
 
   }
