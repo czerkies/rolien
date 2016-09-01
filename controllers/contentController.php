@@ -4,6 +4,8 @@ class contentController extends superController {
 
   public function videos() {
 
+    $meta['file_name'] = 'videos';
+
     $page = new superModel();
 
     // Récupération des données par cat.
@@ -46,10 +48,12 @@ class contentController extends superController {
       ]
     );
 
-    $meta = $meta ?? NULL;
+    //$meta = $meta ?? NULL;
+    //$meta['title'] = "Fonction";
+    $meta['restriction'] = 2;
 
     $this->render(
-      ['content', 'videos'],
+      $meta,
       ['hw' => $hw, 'uve' => $uve]
     );
 
@@ -57,11 +61,14 @@ class contentController extends superController {
 
   public function home() {
 
-    $datas['text'] = 'Test';
+    $meta['file_name'] = 'home';
 
-    return [
-      'datas' => $datas,
-    ];
+    $text = 'Test';
+
+    $this->render(
+      $meta,
+      ['text' => $text]
+    );
 
   }
 

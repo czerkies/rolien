@@ -14,26 +14,44 @@ class superController {
   /**
   * Fonction permettant l'affichage dans le template.
   *
-  * @param Array $fileView Chemin du fichier à afficher
+  * @param Array $meta Chemin du fichier à afficher
   * @return
   */
-  public function render($fileView = array(), $vars = array()) {
+  public function render($meta = array(), $datas = array()) {
 
-    //session_start();
+    session_start();
 
-    /*$folder = $this->methodToFile($fileView[0]);
-    $file = $this->methodToFile($fileView[1]);*/
+    $page = new superModel();
+    $meta = $page->metaDatas($meta['file_name']);
+
+    echo "<pre>";
+    var_dump($datas);
+    echo "<hr>";
+    var_dump($meta);
+
+    $userStatus = $_SESSION['membre']['status'] ?? 1;
+
+    foreach ($meta as $key => $value) {
+      if(isset($meta[$key])) $meta[$key] = $meta[$key];
+    }
+
+    if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) echo "KO";
+
+    if(isset($datas)) extract($datas);
+
+    var_dump($datas);
+
+    /*$folder = $this->methodToFile($meta[0]);
+    $file = $this->methodToFile($meta[1]);*/
 
     /*$datas = new superModel;
     $meta = $datas->metaDatas($file, $meta ?? NULL);*/
 
-    //var_dump($vars);
+    //var_dump($meta);
 
     //$userStatus = $_SESSION['membre']['status'] ?? 1;
 
-    if(isset($vars)) extract($vars);
-
-    if(file_exists('../views/' . $fileView[0] . '/' . $fileView[1] . '.php')) {
+    if(file_exists('../views/' . $meta['folder'] . '/' . $meta['file_name'] . '.php')) {
 
       ob_start();
 
@@ -45,7 +63,7 @@ class superController {
 
       } else {*/
 
-        include '../views/' . $fileView[0] . '/' . $fileView[1] . '.php';
+        include '../views/' . $meta['folder'] . '/' . $meta['file_name'] . '.php';
 
       //}
       $buffer = ob_get_contents();
@@ -55,7 +73,7 @@ class superController {
 
     } else {
 
-      $this->displayError(__CLASS__, __FUNCTION__, "Le dossier doit correspondre à votre 'Class' et votre Fichier doit correspondre à votre 'Function'.");
+      $this->displayError(__CLASS__, __FUNCTION__, "Le fichier est introuvable.");
 
     }
 
@@ -64,7 +82,7 @@ class superController {
   /**
   * Fonction permettant l'affichage dans le template.
   *
-  * @param Array $fileView Chemin du fichier à afficher
+  * @param Array $meta Chemin du fichier à afficher
   * @return
   */
   /*public function dispatch() {
@@ -87,14 +105,14 @@ class superController {
     }
 
     $metaPage = $datasContent['meta'] ?? NULL;
-    $vars = $datasContent['datas'] ?? NULL;
+    $meta = $datasContent['datas'] ?? NULL;
 
     foreach ($meta as $key => $value) if(!isset($metaPage[$key])) $metaPage[$key] = $value;
 
     $this->render(
       [$meta['folder'], $meta['file_name']],
       $metaPage,
-      $vars
+      $meta
     );
 
   }
