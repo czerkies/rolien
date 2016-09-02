@@ -19,8 +19,6 @@ class superModel extends superController {
   */
   public function pdo() {
 
-    include_once '../conf/param.php';
-
     $options = [ // Options
       PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING,
       PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8, lc_time_names = \'fr_FR\''
@@ -45,29 +43,25 @@ class superModel extends superController {
 
   }
 
-  public function metaDatas($url) {
+  public function metaDatas($file_name) {
 
-    $sqlVerif = "SELECT url FROM pages WHERE url = '$url'";
+    $sqlVerif = "SELECT file_name FROM pages WHERE file_name = '$file_name'";
     $exist = $this->pdo()->query($sqlVerif);
 
-    //if(!$exist->rowCount()) $url = '400';
+    //if(!$exist->rowCount()) $file_name = '400';
     if($exist->rowCount()) {
 
-      $sql = "SELECT file_name, folder, title, description, restriction, function FROM pages WHERE url = '$url'";
+      $sql = "SELECT file_name, folder, title, description, restriction, function FROM pages WHERE file_name = '$file_name'";
       $datas = $this->pdo()->query($sql);
 
       return $datasPage = $datas->fetch(PDO::FETCH_ASSOC);
-
-    } else {
-
-      self::contentErrors('400');
 
     }
 
 
   }
 
-  public function contentErrors($page) {
+  /*public function contentErrors($page) {
 
     $sql = "SELECT folder, file_name, title, description FROM pages WHERE file_name = '$page'";
 
@@ -75,6 +69,6 @@ class superModel extends superController {
 
     return $datasPage = $datas->fetch(PDO::FETCH_ASSOC);
 
-  }
+  }*/
 
 }
