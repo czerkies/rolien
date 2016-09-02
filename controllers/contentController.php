@@ -16,23 +16,11 @@ class contentController extends superController {
     //$meta['title'] = 'Une vie en 16/9';
     $datas['uve'] = "Liste du content";
 
-    if(isset($this->_url[1])) {
+    if(!empty($_GET['current'])) {
 
-      $datasVid = $page->metaDatas($this->_url[1]);
-
-      if($datasVid !== FALSE) {
-
-        $datas['uve'] = $datasVid['description'];
-        $meta['title'] = $datasVid['title'];
-
-      }
+      $meta['title'] = 'video : ' . $_GET['current'];
 
     }
-
-    //$meta['title'] = '';
-    //$meta['description'] = 'Test';
-    //$meta['current_menu'] = '';
-    //$meta['restriction'] = 0;
 
     $limit = 2;
 
@@ -50,7 +38,7 @@ class contentController extends superController {
 
     //$meta = $meta ?? NULL;
     //$meta['title'] = "Fonction";
-    $meta['restriction'] = 2;
+    $meta['restriction'] = 0;
 
     $this->render(
       $meta,

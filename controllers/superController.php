@@ -17,29 +17,25 @@ class superController {
   * @param Array $meta Chemin du fichier à afficher
   * @return
   */
-  public function render($meta = array(), $datas = array()) {
+  public function render($metaFunction = array(), $datas = array()) {
 
     session_start();
 
     $page = new superModel();
-    $meta = $page->metaDatas($meta['file_name']);
+    $meta = $page->metaDatas($metaFunction['file_name']);
 
     echo "<pre>";
-    var_dump($datas);
+    var_dump($metaFunction);
     echo "<hr>";
     var_dump($meta);
 
     $userStatus = $_SESSION['membre']['status'] ?? 1;
 
-    foreach ($meta as $key => $value) {
-      if(isset($meta[$key])) $meta[$key] = $meta[$key];
-    }
+    foreach ($meta as $key => $value) if(isset($metaFunction[$key])) $meta[$key] = $metaFunction[$key];
 
     if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) echo "KO";
 
     if(isset($datas)) extract($datas);
-
-    var_dump($datas);
 
     /*$folder = $this->methodToFile($meta[0]);
     $file = $this->methodToFile($meta[1]);*/
