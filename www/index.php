@@ -1,4 +1,7 @@
 <?php
+
+include_once '../conf/param.php';
+
 function autoloader($class) {
 
   if(strpos($class, 'Controller') !== FALSE){

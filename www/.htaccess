@@ -2,7 +2,13 @@ RewriteEngine on
 
 RewriteCond %{REQUEST_FILENAME} !-f
 
-RewriteRule ^videos/ index.php?controller=content&method=videos [L]
+RewriteRule ^videos/(.*)$ index.php?controller=content&method=videos&current=$1 [L]
+
+RewriteRule ^page-introuvable/ index.php?controleur=content&action=home [L]
+
+ErrorDocument 401 /rolien/www/page-introuvable/
+ErrorDocument 403 /rolien/www/page-introuvable/
+ErrorDocument 404 /rolien/www/page-introuvable/
 
 #RewriteRule ^$ index.php?controller=super&method=dispatch&url=home [L]
 #RewriteRule ^(.*)$ index.php?controller=super&method=dispatch&url=$1 [QSA,L]
