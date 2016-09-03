@@ -17,23 +17,22 @@ class superController {
   * @param Array $meta Chemin du fichier à afficher
   * @return
   */
-  public function render($metaFunction = array(), $datas = array()) {
+  public function render($meta = array(), $datas = array()) {
 
     session_start();
 
     $page = new superModel();
-    $meta = $page->metaDatas($metaFunction['file_name']);
+    $metaDB = $page->metaDatas($meta['file_name']);
 
     echo "<pre>";
-    var_dump($metaFunction);
-    echo "<hr>";
     var_dump($meta);
+    echo "<hr>";
+    var_dump($metaDB);
 
-    $userStatus = $_SESSION['membre']['status'] ?? 1;
+    if($metaDB) foreach($metaDB as $key => $value) if(!isset($meta[$key])) $meta[$key] = $metaDB[$key];
 
-    foreach ($meta as $key => $value) if(isset($metaFunction[$key])) $meta[$key] = $metaFunction[$key];
-
-    if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) echo "KO";
+    $userStatus = $_SESSION['membre']['status'] ?? 0;
+    //if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) $meta = $page->metaDatas();
 
     if(isset($datas)) extract($datas);
 
@@ -68,10 +67,10 @@ class superController {
       include '../views/template.php';
 
     } else {
-
       $this->displayError(__CLASS__, __FUNCTION__, "Le fichier est introuvable.");
-
     }
+
+
 
   }
 

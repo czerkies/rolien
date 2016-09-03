@@ -5,8 +5,9 @@ class contentController extends superController {
   public function videos() {
 
     $meta['file_name'] = 'videos';
+    //$meta['folder'] = 'content';
 
-    $page = new superModel();
+    //$page = new superModel();
 
     // Récupération des données par cat.
     // Si une _url[1] est présente, lancer la fonction de récupération de cet article.
