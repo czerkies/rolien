@@ -43,20 +43,20 @@ class superModel extends superController {
 
   }
 
-  public function metaDatas($file_name) {
+  public function metaDatas($file_name = 'restriction') {
 
-    $sqlVerif = "SELECT file_name FROM pages WHERE file_name = '$file_name'";
-    $exist = $this->pdo()->query($sqlVerif);
+    //$sqlVerif = "SELECT file_name FROM pages WHERE file_name = '$file_name'";
+    //$exist = $this->pdo()->query($sqlVerif);
 
     //if(!$exist->rowCount()) $file_name = '400';
-    if($exist->rowCount()) {
+    //if($exist->rowCount()) {
 
       $sql = "SELECT file_name, folder, title, description, restriction, function FROM pages WHERE file_name = '$file_name'";
       $datas = $this->pdo()->query($sql);
 
       return $datasPage = $datas->fetch(PDO::FETCH_ASSOC);
 
-    }
+    //}
 
 
   }
