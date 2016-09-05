@@ -20,35 +20,49 @@ function autoloader($class) {
 
 spl_autoload_register('autoloader');
 
-/*if(isset($_GET['url']) && !empty($_GET['url'])) {
+/*function erreurUrl(){
 
-  include('../controllers/superController.php');
-  $instance = new superController();
-  $instance->dispatch();
+  include('../controllers/contentController.php');
+  $instance = new contentController();
+  $instance->home();
 
 }*/
 
-if(isset($_GET['controller']) && !empty($_GET['controller'])
+$controller = (isset($_GET['controller']) && !empty($_GET['controller'])) ? htmlentities($_GET['controller']) : 'content';
+$method = (isset($_GET['method']) && !empty($_GET['method'])) ? htmlentities($_GET['method']) : 'home';
+
+/*if(isset($_GET['controller']) && !empty($_GET['controller'])
   && isset($_GET['method']) && !empty($_GET['method'])) {
 
     $controller = htmlentities($_GET['controller']);
-    $method = htmlentities($_GET['method']);
+    $method = htmlentities($_GET['method']);*/
 
-    if(file_exists('../controllers/'.$controller.'Controller.php')) {
-      include('../controllers/'.$controller.'Controller.php');
+/*    if(file_exists('../controllers/'.$controller.'Controller.php')) {
+      //include('../controllers/'.$controller.'Controller.php');
         if(method_exists($controller.'Controller', $method)) {
-          $classe = $controller.'Controller';
+          /*$classe = $controller.'Controller';
           $instance = new $classe();
-          $instance->$method();
+          $instance->$method();*/
+      //  }/* else {
 
-        }
+        /*  erreurUrl();
 
-    }
+        }*/
 
-  } else {
+    //} /*else {
 
-    include('../controllers/contentController.php');
-    $instance = new contentController();
-    $instance->home();
+      /*erreurUrl();
 
-  }
+    }*/
+
+/*} else {
+
+  include('../controllers/contentController.php');
+  $instance = new contentController();
+  $instance->home();
+
+}*/
+
+$classe = $controller.'Controller';
+$instance = new $classe();
+$instance->$method();

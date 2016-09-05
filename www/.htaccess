@@ -1,10 +1,12 @@
-RewriteEngine on
+RewriteEngine On
 
 RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 
 RewriteRule ^videos/(.*)$ index.php?controller=content&method=videos&current=$1 [L]
+RewriteRule ^a-propos/ index.php?controller=content&method=aPropos [L]
 
-RewriteRule ^page-introuvable/ index.php?controleur=content&action=home [L]
+RewriteRule ^page-introuvable/ index.php?controller=content&method=undefind [L]
 
 ErrorDocument 401 /rolien/www/page-introuvable/
 ErrorDocument 403 /rolien/www/page-introuvable/
