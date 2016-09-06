@@ -43,7 +43,7 @@ class superModel extends superController {
 
   }
 
-  public function metaDatas($file_name = 'restriction') {
+  public function metaDatas($file_name = 'undefind') {
 
     //$sqlVerif = "SELECT file_name FROM pages WHERE file_name = '$file_name'";
     //$exist = $this->pdo()->query($sqlVerif);
