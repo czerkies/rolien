@@ -2,6 +2,8 @@
 
 class contentController extends superController {
 
+
+
   public function videos() {
 
     $meta['file_name'] = 'videos';
@@ -15,11 +17,12 @@ class contentController extends superController {
     $uve = NULL;
 
     //$meta['title'] = 'Une vie en 16/9';
-    $datas['uve'] = "Liste du content";
+    $uve = "Liste du content";
 
     if(!empty($_GET['current'])) {
 
       $meta['title'] = 'video : ' . $_GET['current'];
+      $uve = "Video #" . $_GET['current'] . " en cours";
 
     }
 
@@ -62,6 +65,18 @@ class contentController extends superController {
   }
 
   public function aPropos() {
+
+    $meta['file_name'] = 'a-propos';
+
+    $this->render($meta);
+
+  }
+
+  public function undefind() {
+
+    $meta['file_name'] = 'undefind';
+
+    $this->render($meta);
 
   }
 

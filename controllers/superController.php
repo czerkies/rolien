@@ -24,29 +24,19 @@ class superController {
     $page = new superModel();
     $metaDB = $page->metaDatas($meta['file_name']);
 
-    echo "<pre>";
+    /*echo "<pre>";
     var_dump($meta);
     echo "<hr>";
-    var_dump($metaDB);
+    var_dump($metaDB);*/
 
     if($metaDB) foreach($metaDB as $key => $value) if(!isset($meta[$key])) $meta[$key] = $metaDB[$key];
 
     $userStatus = $_SESSION['membre']['status'] ?? 0;
-    //if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) $meta = $page->metaDatas();
-
+    if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) $meta = $page->metaDatas('restriction');
+    if(!file_exists('../views/' . $meta['folder'] . '/' . $meta['file_name'] . '.php')) $meta = $page->metaDatas('undefind');
     if(isset($datas)) extract($datas);
 
-    /*$folder = $this->methodToFile($meta[0]);
-    $file = $this->methodToFile($meta[1]);*/
-
-    /*$datas = new superModel;
-    $meta = $datas->metaDatas($file, $meta ?? NULL);*/
-
-    //var_dump($meta);
-
-    //$userStatus = $_SESSION['membre']['status'] ?? 1;
-
-    if(file_exists('../views/' . $meta['folder'] . '/' . $meta['file_name'] . '.php')) {
+  //if(file_exists('../views/' . $meta['folder'] . '/' . $meta['file_name'] . '.php')) {
 
       ob_start();
 
@@ -66,9 +56,9 @@ class superController {
 
       include '../views/template.php';
 
-    } else {
-      $this->displayError(__CLASS__, __FUNCTION__, "Le fichier est introuvable.");
-    }
+  //  } else {
+    //  $this->displayError(__CLASS__, __FUNCTION__, "Le fichier est introuvable.");
+    //}
 
 
 
