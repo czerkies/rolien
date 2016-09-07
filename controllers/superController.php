@@ -33,7 +33,7 @@ class superController {
 
     $userStatus = $_SESSION['membre']['status'] ?? 0;
     if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) $meta = $page->metaDatas('restriction');
-    if(!file_exists('../views/' . $meta['folder'] . '/' . $meta['file_name'] . '.php')) $meta = $page->metaDatas('undefind');
+    if(!file_exists('../views/' . $meta['folder'] . '/' . $meta['file_name'] . '.php')) $meta = $page->metaDatas('errorUrl');
     if(isset($datas)) extract($datas);
 
   //if(file_exists('../views/' . $meta['folder'] . '/' . $meta['file_name'] . '.php')) {

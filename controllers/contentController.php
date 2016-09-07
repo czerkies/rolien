@@ -72,9 +72,9 @@ class contentController extends superController {
 
   }
 
-  public function undefind() {
+  public function errorUrl() {
 
-    $meta['file_name'] = 'undefind';
+    $meta['file_name'] = 'errorUrl';
 
     $this->render($meta);
 
