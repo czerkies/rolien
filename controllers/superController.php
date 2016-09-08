@@ -19,48 +19,34 @@ class superController {
   */
   public function render($meta = array(), $datas = array()) {
 
+    // Démarage de la 'session'
     session_start();
 
+    // Chargement des données depuis la DB.
     $page = new superModel();
     $metaDB = $page->metaDatas($meta['file_name']);
 
-    /*echo "<pre>";
-    var_dump($meta);
-    echo "<hr>";
-    var_dump($metaDB);*/
-
+    // Assignation des données si existante à la variable 'meta'
     if($metaDB) foreach($metaDB as $key => $value) if(!isset($meta[$key])) $meta[$key] = $metaDB[$key];
 
+    // Vérification de la restriction
     $userStatus = $_SESSION['membre']['status'] ?? 0;
     if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) $meta = $page->metaDatas('restriction');
+
+    // Controle de l'existance de la page
     if(!file_exists('../views/' . $meta['folder'] . '/' . $meta['file_name'] . '.php')) $meta = $page->metaDatas('errorUrl');
+
+    // Si des données sont envoyées alors extraction
     if(isset($datas)) extract($datas);
 
-  //if(file_exists('../views/' . $meta['folder'] . '/' . $meta['file_name'] . '.php')) {
+    // Affichage content
+    ob_start();
+    include '../views/' . $meta['folder'] . '/' . $meta['file_name'] . '.php';
+    $buffer = ob_get_contents();
+    ob_end_clean();
 
-      ob_start();
-
-      /*if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) {
-
-        $meta['title'] = 'Page non autorisé';
-        $meta['description'] = 'Page non autorisé';
-        include '../views/errors/restriction.php';
-
-      } else {*/
-
-        include '../views/' . $meta['folder'] . '/' . $meta['file_name'] . '.php';
-
-      //}
-      $buffer = ob_get_contents();
-      ob_end_clean();
-
-      include '../views/template.php';
-
-  //  } else {
-    //  $this->displayError(__CLASS__, __FUNCTION__, "Le fichier est introuvable.");
-    //}
-
-
+    // Chargement du template
+    include '../views/template.php';
 
   }
 
@@ -99,25 +85,6 @@ class superController {
       $metaPage,
       $meta
     );
-
-  }
-
-  /*public function methodToFile($value) {
-
-    $file = '';
-
-    foreach (preg_split('/(?=[A-Z])/', $value) as $key => $value) {
-
-      if($value != 'Controller') {
-
-        if($key) $file .= '-';
-        $file .= strtolower($value);
-
-      }
-
-    }
-
-    return $file;
 
   }*/
 
