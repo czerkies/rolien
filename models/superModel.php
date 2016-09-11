@@ -19,8 +19,6 @@ class superModel extends superController {
   */
   public function pdo() {
 
-    include_once '../conf/param.php';
-
     $options = [ // Options
       PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING,
       PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8, lc_time_names = \'fr_FR\''
@@ -45,18 +43,31 @@ class superModel extends superController {
 
   }
 
-  public function metaDatas($url) {
+  public function metaDatas($file_name) {
 
-    $sqlVerif = "SELECT url FROM pages WHERE url = '$url'";
-    $exist = $this->pdo()->query($sqlVerif);
+    if(is_string($file_name) && !empty($file_name)) {
 
-    if(!$exist->rowCount()) $url = '400';
+      $sql = "SELECT file_name, folder, title, description, restriction FROM pages WHERE file_name = '$file_name'";
+      $datas = $this->pdo()->query($sql);
 
-    $sql = "SELECT file_name, folder, title, description, restriction, function FROM pages WHERE url = '$url'";
+      return $datasPage = $datas->fetch(PDO::FETCH_ASSOC);
+
+    } else {
+
+      $this->displayError(__CLASS__, __FUNCTION__, "'file_name' non valide.");
+
+    }
+
+  }
+
+  /*public function contentErrors($page) {
+
+    $sql = "SELECT folder, file_name, title, description FROM pages WHERE file_name = '$page'";
+
     $datas = $this->pdo()->query($sql);
 
     return $datasPage = $datas->fetch(PDO::FETCH_ASSOC);
 
-  }
+  }*/
 
 }

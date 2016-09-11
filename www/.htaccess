@@ -1,9 +1,21 @@
-RewriteEngine on
+RewriteEngine On
 
 RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 
-RewriteRule ^$ index.php?controller=super&method=dispatch&url=home [L]
-RewriteRule ^(.*)$ index.php?controller=super&method=dispatch&url=$1 [QSA,L]
+RewriteRule ^une-vie-en-169/(.*)$ index.php?controller=content&method=videos&cat=uve&vid=$1 [L]
+RewriteRule ^foutoir/(.*)$ index.php?controller=content&method=videos&cat=fou&vid=$1 [L]
+RewriteRule ^johnson-&-fernandez/(.*)$ index.php?controller=content&method=videos&cat=jef&vid=$1 [L]
+RewriteRule ^a-propos/ index.php?controller=content&method=aPropos [L]
+
+RewriteRule ^page-introuvable/ index.php?controller=content&method=erreurUrl [L]
+
+ErrorDocument 401 /rolien/www/page-introuvable/
+ErrorDocument 403 /rolien/www/page-introuvable/
+ErrorDocument 404 /rolien/www/page-introuvable/
+
+#RewriteRule ^$ index.php?controller=super&method=dispatch&url=home [L]
+#RewriteRule ^(.*)$ index.php?controller=super&method=dispatch&url=$1 [QSA,L]
 
 #RewriteRule ^a-propos/$ index.php?controller=content&method=aPropos [L]
 #RewriteRule ^(.*)$ index.php?controller=content&method=videos&url=$1 [L,QSA]

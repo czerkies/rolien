@@ -14,54 +14,49 @@ class superController {
   /**
   * Fonction permettant l'affichage dans le template.
   *
-  * @param Array $fileView Chemin du fichier à afficher
+  * @param Array $meta Chemin du fichier à afficher
   * @return
   */
-  public function render($fileView = array(), $meta = NULL, $vars = array()) {
+  public function render($meta = array(), $datas = array()) {
 
-    //session_start();
+    // Démarage de la 'session'
+    session_start();
 
-    /*$folder = $this->methodToFile($fileView[0]);
-    $file = $this->methodToFile($fileView[1]);*/
+    // Chargement des données depuis la DB.
+    $page = new superModel();
+    $metaDB = $page->metaDatas($meta['file_name']);
 
-    /*$datas = new superModel;
-    $meta = $datas->metaDatas($file, $meta ?? NULL);*/
+    // Assignation des données si existante à la variable 'meta'
+    if($metaDB) foreach($metaDB as $key => $value) if(!isset($meta[$key])) $meta[$key] = $metaDB[$key];
 
-    //var_dump($fileView);
+    // Vérification de la restriction
+    $userStatus = $_SESSION['membre']['status'] ?? 0;
+    if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) $meta = $page->metaDatas('restriction');
 
-    //$userStatus = $_SESSION['membre']['status'] ?? 1;
+    // Controle de l'existance de la page
+    if(!file_exists('../views/' . $meta['folder'] . '/' . $meta['file_name'] . '.php')) $meta = $page->metaDatas('errorUrl');
 
-    if(isset($vars)) extract($vars);
+    // Si des données sont envoyées alors extraction
+    if(isset($datas)) extract($datas);
 
-    if(file_exists('../views/' . $fileView[0] . '/' . $fileView[1] . '.php')) {
+    // Affichage content
+    ob_start();
+    include '../views/' . $meta['folder'] . '/' . $meta['file_name'] . '.php';
+    $buffer = ob_get_contents();
+    ob_end_clean();
 
-      ob_start();
-
-      /*if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) {
-
-        $meta['title'] = 'Page non autorisé';
-        $meta['description'] = 'Page non autorisé';
-        include '../views/errors/restriction.php';
-
-      } else {*/
-
-        include '../views/' . $fileView[0] . '/' . $fileView[1] . '.php';
-
-      //}
-      $buffer = ob_get_contents();
-      ob_end_clean();
-
-      include '../views/template.php';
-
-    } else {
-
-      $this->displayError(__CLASS__, __FUNCTION__, "Le dossier doit correspondre à votre 'Class' et votre Fichier doit correspondre à votre 'Function'.");
-
-    }
+    // Chargement du template
+    include '../views/template.php';
 
   }
 
-  public function dispatch() {
+  /**
+  * Fonction permettant l'affichage dans le template.
+  *
+  * @param Array $meta Chemin du fichier à afficher
+  * @return
+  */
+  /*public function dispatch() {
 
     $url = explode('/', trim($_GET['url'], '/'));
 
@@ -70,60 +65,26 @@ class superController {
 
     $meta = $datas->metaDatas($url[0]);
 
-    //var_dump($meta);
-    //var_dump(method_exists('contentController', $meta['function']));
+    if(empty($meta['folder']) || empty($meta['file_name'])) $meta = $datas->contentErrors('400');
+
+    $userStatus = $_SESSION['membre']['status'] ?? 0;
+
+    if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) $meta = $datas->contentErrors('restriction');
 
     if(isset($meta['function']) && method_exists('contentController', $meta['function']) === TRUE) {
       $datasContent = $content->{$meta['function']}();
     }
 
-    // @TODO S'il manque le folder et file_name
-    if(empty($meta['folder']) || empty($meta['file_name'])) {
-      $meta['folder'] = 'errors';
-      $meta['file_name'] = '400';
-    }
-
     $metaPage = $datasContent['meta'] ?? NULL;
-    $vars = $datasContent['datas'] ?? NULL;
+    $meta = $datasContent['datas'] ?? NULL;
 
     foreach ($meta as $key => $value) if(!isset($metaPage[$key])) $metaPage[$key] = $value;
-
-    $userStatus = $_SESSION['membre']['status'] ?? 0;
-
-    // @TODO Si le user est non autorisé.
-    if($meta['restriction'] > $userStatus) {
-
-      $meta['title'] = 'Page non autorisé';
-      $meta['description'] = 'Page non autorisé';
-      $meta['folder'] = 'errors';
-      $meta['file_name'] = 'restriction';
-
-    }
 
     $this->render(
       [$meta['folder'], $meta['file_name']],
       $metaPage,
-      $vars
+      $meta
     );
-
-  }
-
-  /*public function methodToFile($value) {
-
-    $file = '';
-
-    foreach (preg_split('/(?=[A-Z])/', $value) as $key => $value) {
-
-      if($value != 'Controller') {
-
-        if($key) $file .= '-';
-        $file .= strtolower($value);
-
-      }
-
-    }
-
-    return $file;
 
   }*/
 

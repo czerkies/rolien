@@ -2,48 +2,30 @@
 
 class contentController extends superController {
 
-  public function __construct($url) {
-    $this->_url = $url;
-  }
-
   public function videos() {
 
-    $page = new superModel();
+    $meta['file_name'] = 'videos';
+    //$meta['folder'] = 'content';
+
+    //$page = new superModel();
 
     // Récupération des données par cat.
     // Si une _url[1] est présente, lancer la fonction de récupération de cet article.
 
     $uve = NULL;
 
-    if(isset($this->_url[0]) && !empty($this->_url[0])) {
+    //$meta['title'] = 'Une vie en 16/9';
+    $uve = "Liste du content";
 
-      //$meta['title'] = 'Une vie en 16/9';
-      $datas['uve'] = "Liste du content";
+    if(!empty($_GET['vid'])) {
 
-      if(isset($this->_url[1])) {
-
-        $datasVid = $page->metaDatas($this->_url[1]);
-
-        if($datasVid !== FALSE) {
-
-          $datas['uve'] = $datasVid['description'];
-          $meta['title'] = $datasVid['title'];
-
-        }
-
-      }
+      $meta['title'] = 'video : ' . $_GET['vid'];
+      $uve = "Video #" . $_GET['vid'] . " en cours";
 
     }
 
-    //$meta['title'] = '';
-    //$meta['description'] = 'Test';
-    //$meta['current_menu'] = '';
-    //$meta['restriction'] = 0;
-
-    $limit = 2;
-
     $word = new queryModel('test');
-    $datas['hw'] = $word->read(
+    $hw = $word->read(
       [
         'column' => 'word',
         //'where' => "word = 'world'",
@@ -54,26 +36,43 @@ class contentController extends superController {
       ]
     );
 
-    $meta = $meta ?? NULL;
+    //$meta = $meta ?? NULL;
+    //$meta['title'] = "Fonction";
+    $meta['restriction'] = 0;
 
-    return [
-      'datas' => $datas,
-      'meta' => $meta
-    ];
+    $this->render(
+      $meta,
+      ['hw' => $hw, 'uve' => $uve]
+    );
 
   }
 
   public function home() {
 
-    $datas['text'] = 'Test';
+    $meta['file_name'] = 'home';
 
-    return [
-      'datas' => $datas
-    ];
+    $text = 'Test';
+
+    $this->render(
+      $meta,
+      ['text' => $text]
+    );
 
   }
 
   public function aPropos() {
+
+    $meta['file_name'] = 'a-propos';
+
+    $this->render($meta);
+
+  }
+
+  public function errorUrl() {
+
+    $meta['file_name'] = 'errorUrl';
+
+    $this->render($meta);
 
   }
 
