@@ -2,8 +2,6 @@
 
 class contentController extends superController {
 
-
-
   public function videos() {
 
     $meta['file_name'] = 'videos';
@@ -19,14 +17,12 @@ class contentController extends superController {
     //$meta['title'] = 'Une vie en 16/9';
     $uve = "Liste du content";
 
-    if(!empty($_GET['current'])) {
+    if(!empty($_GET['vid'])) {
 
-      $meta['title'] = 'video : ' . $_GET['current'];
-      $uve = "Video #" . $_GET['current'] . " en cours";
+      $meta['title'] = 'video : ' . $_GET['vid'];
+      $uve = "Video #" . $_GET['vid'] . " en cours";
 
     }
-
-    $limit = 2;
 
     $word = new queryModel('test');
     $hw = $word->read(
