@@ -30,7 +30,7 @@ if(!file_exists('../controllers/'.$controller.'Controller.php')
 || !method_exists($controller . 'Controller', $method)) {
 
   $controller = 'content';
-  $method = 'undefind';
+  $method = 'errorUrl';
 
 }
 
