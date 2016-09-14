@@ -82,7 +82,7 @@ class queryModel extends superModel {
 
       // Format de récupération des données.
       if(!isset($conditions['format']) || $conditions['format'] === 'rows') $datasFormat = $datas->fetchAll(PDO::FETCH_ASSOC);
-      elseif($conditions['format'] === 'oneRow') $datasFormat = $datas->fetch(PDO::FETCH_ASSOC);
+      elseif($conditions['format'] === 'row') $datasFormat = $datas->fetch(PDO::FETCH_ASSOC);
       elseif($conditions['format'] === 'nbRows') $datasFormat = $datas->rowCount();
       else $this->displayError(__CLASS__, __FUNCTION__, "Le format demandé doit être égal à 'oneRow', 'nbRows' ou NULL.");
 
