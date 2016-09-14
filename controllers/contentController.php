@@ -13,14 +13,30 @@ class contentController extends superController {
     // Si une _url[1] est présente, lancer la fonction de récupération de cet article.
 
     $uve = NULL;
+    $vid = '';
 
     //$meta['title'] = 'Une vie en 16/9';
     $uve = "Liste du content";
 
     if(!empty($_GET['vid'])) {
 
-      $meta['title'] = 'video : ' . $_GET['vid'];
-      $uve = "Video #" . $_GET['vid'] . " en cours";
+      $vidDB = new queryModel('videos');
+      $vid = $vidDB->read(
+        [
+          //'column' => 'word',
+          'where' => "id_video = '".$_GET['vid']."' AND categorie = '".$_GET['cat']."'",
+          /*'limit' => $limit,
+          'orderby' => 'word',
+          'order' => 'desc',*/
+          'format' => 'row'
+        ]
+      );
+
+      if($vid) {
+        $meta['title'] = 'video : ' . $vid['title'];
+        $meta['description'] = $vid['description'];
+        $uve = "Video #" . $vid['title'] . " en cours";
+      }
 
     }
 
@@ -42,7 +58,7 @@ class contentController extends superController {
 
     $this->render(
       $meta,
-      ['hw' => $hw, 'uve' => $uve]
+      ['hw' => $hw, 'uve' => $uve, 'vid' => $vid]
     );
 
   }
