@@ -12,6 +12,9 @@ class contentController extends superController {
     // Récupération des données par cat.
     // Si une _url[1] est présente, lancer la fonction de récupération de cet article.
 
+    $vidByCat = new publicModel($_GET['cat']);
+    $vids = $vidByCat->getVideosCat();
+
     $uve = NULL;
     $vid = '';
 
@@ -20,17 +23,19 @@ class contentController extends superController {
 
     if(!empty($_GET['vid'])) {
 
-      $vidDB = new queryModel('videos');
+      /*$vidDB = new queryModel('videos');
       $vid = $vidDB->read(
         [
-          //'column' => 'word',
+          'column' => 'word',
           'where' => "id_video = '".$_GET['vid']."' AND categorie = '".$_GET['cat']."'",
-          /*'limit' => $limit,
+          'limit' => $limit,
           'orderby' => 'word',
-          'order' => 'desc',*/
+          'order' => 'desc',
           'format' => 'row'
         ]
-      );
+      );*/
+
+      $vid = $vidByCat->getVideo($_GET['vid']);
 
       if($vid) {
         $meta['title'] = 'video : ' . $vid['title'];
@@ -58,7 +63,7 @@ class contentController extends superController {
 
     $this->render(
       $meta,
-      ['hw' => $hw, 'uve' => $uve, 'vid' => $vid]
+      ['hw' => $hw, 'uve' => $uve, 'vids' => $vids, 'vid' => $vid]
     );
 
   }
