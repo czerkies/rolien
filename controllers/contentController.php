@@ -5,12 +5,6 @@ class contentController extends superController {
   public function videos() {
 
     $meta['file_name'] = 'videos';
-    //$meta['folder'] = 'content';
-
-    //$page = new superModel();
-
-    // Récupération des données par cat.
-    // Si une _url[1] est présente, lancer la fonction de récupération de cet article.
 
     $vidByCat = new publicModel($_GET['cat']);
     $vids = $vidByCat->getVideosCat();
@@ -18,22 +12,9 @@ class contentController extends superController {
     $uve = NULL;
     $vid = '';
 
-    //$meta['title'] = 'Une vie en 16/9';
     $uve = "Liste du content";
 
     if(!empty($_GET['vid'])) {
-
-      /*$vidDB = new queryModel('videos');
-      $vid = $vidDB->read(
-        [
-          'column' => 'word',
-          'where' => "id_video = '".$_GET['vid']."' AND categorie = '".$_GET['cat']."'",
-          'limit' => $limit,
-          'orderby' => 'word',
-          'order' => 'desc',
-          'format' => 'row'
-        ]
-      );*/
 
       $vid = $vidByCat->getVideo($_GET['vid']);
 
@@ -41,6 +22,8 @@ class contentController extends superController {
         $meta['title'] = 'video : ' . $vid['title'];
         $meta['description'] = $vid['description'];
         $uve = "Video #" . $vid['title'] . " en cours";
+      } else {
+        $meta = $vidByCat->metaDatas('errorUrl');
       }
 
     }
@@ -57,8 +40,6 @@ class contentController extends superController {
       ]
     );
 
-    //$meta = $meta ?? NULL;
-    //$meta['title'] = "Fonction";
     $meta['restriction'] = 0;
 
     $this->render(
