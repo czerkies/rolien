@@ -14,31 +14,31 @@ class contentController extends superController {
 
     $uve = "Liste du content";
 
-    if(!empty($_GET['vid'])) {
+    var_dump($_GET);
+
+    if(isset($_GET['vid']) && !empty($_GET['vid'])) {
 
       $vid = $vidByCat->getVideo($_GET['vid']);
 
       if($vid) {
+
         $meta['title'] = 'video : ' . $vid['title'];
         $meta['description'] = $vid['description'];
         $uve = "Video #" . $vid['title'] . " en cours";
-      } else {
-        $meta = $vidByCat->metaDatas('errorUrl');
+
       }
 
     }
 
     $word = new queryModel('test');
-    $hw = $word->read(
-      [
-        'column' => 'word',
-        //'where' => "word = 'world'",
-        /*'limit' => $limit,
-        'orderby' => 'word',
-        'order' => 'desc',*/
-        //'format' => 'rows'
-      ]
-    );
+    $hw = $word->read([
+      'column' => 'word',
+      //'where' => "word = 'world'",
+      /*'limit' => $limit,
+      'orderby' => 'word',
+      'order' => 'desc',*/
+      //'format' => 'rows'
+    ]);
 
     $meta['restriction'] = 0;
 

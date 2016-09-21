@@ -33,7 +33,7 @@ class superController {
     $userStatus = $_SESSION['membre']['status'] ?? 0;
     if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) $meta = $page->metaDatas('restriction');
 
-    // Controle de l'existance de la page
+    // Controle de l'existance de la pager
     if(!file_exists('../views/' . $meta['folder'] . '/' . $meta['file_name'] . '.php')) $meta = $page->metaDatas('errorUrl');
 
     // Si des données sont envoyées alors extraction
