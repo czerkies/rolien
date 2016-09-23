@@ -11,13 +11,15 @@
  */
 class publicModel extends superModel {
 
-  public function __construct($cat) {
+  public function __construct($cat = NULL) {
     return $this->_cat = $cat;
   }
 
   public function getVideosCat() {
 
-    $sql = "SELECT * FROM videos WHERE categorie = '$this->_cat'";
+    $sql = "SELECT * FROM videos";
+
+    if($this->_cat) $sql .= " WHERE categorie = '$this->_cat'";
 
     $datas = $this->pdo()->query($sql);
     return $vids = $datas->fetchAll(PDO::FETCH_ASSOC);
