@@ -14,8 +14,6 @@ class contentController extends superController {
 
     $uve = "Liste du content";
 
-    var_dump($_GET);
-
     if(isset($_GET['vid']) && !empty($_GET['vid'])) {
 
       $vid = $vidByCat->getVideo($_GET['vid']);
@@ -25,6 +23,10 @@ class contentController extends superController {
         $meta['title'] = 'video : ' . $vid['title'];
         $meta['description'] = $vid['description'];
         $uve = "Video #" . $vid['title'] . " en cours";
+
+      } else {
+
+        self::errorUrl();
 
       }
 
@@ -53,11 +55,14 @@ class contentController extends superController {
 
     $meta['file_name'] = 'home';
 
+    $vidByCat = new publicModel();
+    $vids = $vidByCat->getVideosCat();
+
     $text = 'Test';
 
     $this->render(
       $meta,
-      ['text' => $text]
+      ['text' => $text, 'vids' => $vids]
     );
 
   }
@@ -72,9 +77,12 @@ class contentController extends superController {
 
   public function errorUrl() {
 
-    $meta['file_name'] = 'errorUrl';
+    $meta['file_name'] = __FUNCTION__;
+
+    // header pour document error 404
 
     $this->render($meta);
+    exit;
 
   }
 
