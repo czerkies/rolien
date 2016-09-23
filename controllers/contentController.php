@@ -2,7 +2,13 @@
 
 class contentController extends superController {
 
-  public function videos() {
+  public function getVideos() {
+
+    $this->videos();
+
+  }
+
+  private function videos() {
 
     $meta['file_name'] = 'videos';
 
@@ -11,6 +17,8 @@ class contentController extends superController {
 
     $uve = NULL;
     $vid = '';
+
+    var_dump($vid);
 
     $uve = "Liste du content";
 
@@ -72,17 +80,6 @@ class contentController extends superController {
     $meta['file_name'] = 'a-propos';
 
     $this->render($meta);
-
-  }
-
-  public function errorUrl() {
-
-    $meta['file_name'] = __FUNCTION__;
-
-    // header pour document error 404
-
-    $this->render($meta);
-    exit;
 
   }
 

@@ -15,7 +15,7 @@ class superController {
   * Fonction permettant l'affichage dans le template.
   *
   * @param Array $meta Chemin du fichier à afficher
-  * @return
+  * @return void
   */
   public function render($meta = array(), $datas = array()) {
 
@@ -51,42 +51,21 @@ class superController {
   }
 
   /**
-  * Fonction permettant l'affichage dans le template.
+  * Renvoit et affiche une page de type 404.
   *
-  * @param Array $meta Chemin du fichier à afficher
-  * @return
+  * @param void
+  * @return void
   */
-  /*public function dispatch() {
+  public function errorUrl() {
 
-    $url = explode('/', trim($_GET['url'], '/'));
+    $meta['file_name'] = __FUNCTION__;
 
-    $content = new contentController($url);
-    $datas = new superModel();
+    // header pour document error 404
+    header('http/1.0 404 Not Found');
+    $this->render($meta);
+    exit;
 
-    $meta = $datas->metaDatas($url[0]);
-
-    if(empty($meta['folder']) || empty($meta['file_name'])) $meta = $datas->contentErrors('400');
-
-    $userStatus = $_SESSION['membre']['status'] ?? 0;
-
-    if(isset($meta['restriction']) && $meta['restriction'] > $userStatus) $meta = $datas->contentErrors('restriction');
-
-    if(isset($meta['function']) && method_exists('contentController', $meta['function']) === TRUE) {
-      $datasContent = $content->{$meta['function']}();
-    }
-
-    $metaPage = $datasContent['meta'] ?? NULL;
-    $meta = $datasContent['datas'] ?? NULL;
-
-    foreach ($meta as $key => $value) if(!isset($metaPage[$key])) $metaPage[$key] = $value;
-
-    $this->render(
-      [$meta['folder'], $meta['file_name']],
-      $metaPage,
-      $meta
-    );
-
-  }*/
+  }
 
   /**
   * Method permettant d'afficher une erreur survenue lors de son appel dans le framework.
