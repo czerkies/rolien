@@ -5,18 +5,18 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !(/$|\.)
 RewriteRule (.*) %{REQUEST_URI}/ [R=301,L]
 
-RewriteRule ^une-vie-en-169/$ index.php?controller=content&method=videos&cat=uve [L]
 RewriteRule ^une-vie-en-169/(.*)/$ index.php?controller=content&method=videos&cat=uve&vid=$1 [L]
+RewriteRule ^une-vie-en-169/$ index.php?controller=content&method=videos&cat=uve [L]
 
-RewriteRule ^foutoir/$ index.php?controller=content&method=videos&cat=fou [L]
 RewriteRule ^foutoir/(.*)/$ index.php?controller=content&method=videos&cat=fou&vid=$1 [L]
+RewriteRule ^foutoir/$ index.php?controller=content&method=videos&cat=fou [L]
 
-RewriteRule ^johnson-&-fernandez/$ index.php?controller=content&method=videos&cat=jef [L]
 RewriteRule ^johnson-&-fernandez/(.*)/$ index.php?controller=content&method=videos&cat=jef&vid=$1 [L]
+RewriteRule ^johnson-&-fernandez/$ index.php?controller=content&method=videos&cat=jef [L]
 
-RewriteRule ^a-propos/ index.php?controller=content&method=aPropos [L]
+RewriteRule ^a-propos/$ index.php?controller=content&method=aPropos [L]
 
-RewriteRule ^page-introuvable/ index.php?controller=content&method=erreurUrl [L]
+RewriteRule ^page-introuvable/$ index.php?controller=content&method=erreurUrl [L]
 
 ErrorDocument 401 /rolien/www/page-introuvable/
 ErrorDocument 403 /rolien/www/page-introuvable/
