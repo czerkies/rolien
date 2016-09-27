@@ -15,11 +15,13 @@ class publicModel extends superModel {
     return $this->_cat = $cat;
   }
 
-  public function getVideosCat() {
+  public function getVideos($args = array()) {
 
     $sql = "SELECT * FROM videos";
 
     if($this->_cat) $sql .= " WHERE categorie = '$this->_cat'";
+    //if(isset($args['limit'])) $sql .= " ORDER BY date LIMIT ".$args['limit'];
+    if(isset($args['order'])) $sql .= " ORDER BY date ". $args['order'];
 
     $datas = $this->pdo()->query($sql);
     return $vids = $datas->fetchAll(PDO::FETCH_ASSOC);
