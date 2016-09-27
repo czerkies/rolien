@@ -2,23 +2,17 @@
 
 class contentController extends superController {
 
-  public function getVideos() {
-
-    $this->videos();
-
-  }
-
-  private function videos() {
+  public function videos() {
 
     $meta['file_name'] = 'videos';
 
+
     $vidByCat = new publicModel($_GET['cat']);
-    $vids = $vidByCat->getVideosCat();
+    $order = ($_GET['cat'] === 'jef') ? 'ASC' : 'DESC';
+    $vids = $vidByCat->getVideos(['order' => $order]);
 
     $uve = NULL;
     $vid = '';
-
-    var_dump($vid);
 
     $uve = "Liste du content";
 
@@ -64,7 +58,7 @@ class contentController extends superController {
     $meta['file_name'] = 'home';
 
     $vidByCat = new publicModel();
-    $vids = $vidByCat->getVideosCat();
+    $vids = $vidByCat->getVideos();
 
     $text = 'Test';
 
