@@ -2,12 +2,12 @@
 
 Catégorie : <?= $_GET['cat']; ?>
 
-<?php if($uve): ?>
+<?php if($vid): ?>
 
-  <p><?= $uve; ?></p>
+  <p><?= $vid['description']; ?></p>
 
 <?php endif; ?>
 
 <?php if(isset($datas['test'])) echo $datas['test']; ?>
 
-<?php var_dump($_GET); ?>
+<?php echo "<pre>"; var_dump($vids); ?>
