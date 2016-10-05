@@ -5,6 +5,8 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !(/$|\.)
 RewriteRule (.*) %{REQUEST_URI}/ [R=301,L]
 
+#RewriteRule ^/index.php(.*)$ index.php?controller=content&method=home&s=$1 [L]
+
 RewriteRule ^une-vie-en-169/(.*)/$ index.php?controller=content&method=videos&cat=uve&vid=$1 [L]
 RewriteRule ^une-vie-en-169/$ index.php?controller=content&method=videos&cat=uve [L]
 
