@@ -60,14 +60,4 @@ class superModel extends superController {
 
   }
 
-  /*public function contentErrors($page) {
-
-    $sql = "SELECT folder, file_name, title, description FROM pages WHERE file_name = '$page'";
-
-    $datas = $this->pdo()->query($sql);
-
-    return $datasPage = $datas->fetch(PDO::FETCH_ASSOC);
-
-  }*/
-
 }
