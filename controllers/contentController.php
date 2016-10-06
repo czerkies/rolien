@@ -6,7 +6,6 @@ class contentController extends superController {
 
     $meta['file_name'] = 'videos';
 
-
     $vidByCat = new publicModel($_GET['cat']);
     $order = ($_GET['cat'] === 'jef') ? 'ASC' : 'DESC';
     $vids = $vidByCat->getVideos(['order' => $order]);
@@ -56,10 +55,24 @@ class contentController extends superController {
   public function home() {
 
     $meta['file_name'] = 'home';
+    $result = NULL;
 
     $vidByCat = new publicModel();
-    $vids = $vidByCat->getVideos();
+    //$vids = $vidByCat->getVideos();
 
+    //$search = $_GET['s'] ?? '';
+    //$search = $_POST['s'] ?? '';
+
+    if(isset($_POST['s'])) {
+
+      $search = ($_POST['s']) ? explode(' ', $_POST['s']) : '';
+
+      //if(isset($_GET['s'])) {
+      $vids = $vidByCat->search($search);
+      //}
+
+    }
+    
     $text = 'Test';
 
     $this->render(
