@@ -39,21 +39,23 @@ class publicModel extends superModel {
 
   public function search($keys) {
 
-    $finder = implode("%' OR '%", $keys);
+    $sql = "SELECT * FROM videos";
 
-    $sqlFinder = '';
-    $arrayFind = ['title', 'description'];
-    foreach ($arrayFind as $col) {
-      foreach ($keys as $value) {
-        $sqlFinder .= "$col LIKE '%$value%' OR ";
+    if(isset($keys) && !empty($keys)) {
+
+      $finder = implode("%' OR '%", $keys);
+
+      $sqlFinder = " WHERE ";
+      $arrayFind = ['title', 'description'];
+      foreach ($arrayFind as $col) {
+        foreach ($keys as $value) {
+          $sqlFinder .= "$col LIKE '%$value%' OR ";
+        }
       }
+
+      $sql .= rtrim($sqlFinder, ' OR ');
+
     }
-
-    /*echo $sqlFinder;
-    echo '<hr>';*/
-
-    //$sql = "SELECT * FROM videos WHERE ((title LIKE ('%$finder%')) OR (description LIKE ('%$finder%')))";
-    $sql = "SELECT * FROM videos WHERE title LIKE '%$keys[0]%' OR title LIKE '%$keys[1]%'"; //OR (title OR description LIKE '%$keys[1]%' OR '%$keys[0]%'))";
 
     $datas = $this->pdo()->query($sql);
     return $result = $datas->fetchAll(PDO::FETCH_ASSOC);
