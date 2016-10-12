@@ -43,19 +43,28 @@ class publicModel extends superModel {
 
     if(isset($keys) && !empty($keys)) {
 
-      $finder = implode("%' OR '%", $keys);
-
       $sqlFinder = " WHERE ";
-      $arrayFind = ['title', 'description'];
-      foreach ($arrayFind as $col) {
-        foreach ($keys as $value) {
-          $sqlFinder .= "$col LIKE '%$value%' OR ";
+      $arrayFind = ['title', 'description', 'date'];
+      foreach ($keys as $value) {
+        $sqlFinder .= " (";
+        foreach ($arrayFind as $keyCol => $col) {
+          if($keyCol > 0) $sqlFinder .= " OR ";
+          $sqlFinder .= "$col LIKE '%$value%'";
         }
+        $sqlFinder .= ") AND ";
       }
 
-      $sql .= rtrim($sqlFinder, ' OR ');
+      $sql .= rtrim($sqlFinder, ' AND ');
+
+      $sql .= " ORDER BY title";
+
+    } else {
+
+      $sql .= " ORDER BY date DESC";
 
     }
+
+    echo $sql;
 
     $datas = $this->pdo()->query($sql);
     return $result = $datas->fetchAll(PDO::FETCH_ASSOC);
