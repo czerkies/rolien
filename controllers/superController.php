@@ -20,7 +20,7 @@ class superController {
   public function render($meta = array(), $datas = array()) {
 
     // Démarage de la 'session'
-    session_start();
+    //session_start();
 
     // Chargement des données depuis la DB.
     $page = new superModel();
