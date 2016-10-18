@@ -58,21 +58,13 @@ class contentController extends superController {
     $result = NULL;
 
     $vidByCat = new publicModel();
-    //$vids = $vidByCat->getVideos();
 
-    //$search = $_GET['s'] ?? '';
-    //$search = $_POST['s'] ?? '';
+    $search = isset($_POST['s']) ? explode(' ', $_POST['s']) : NULL;
 
-    if(isset($_POST['s'])) {
+    //if(isset($_GET['s'])) {
+    $vids = $vidByCat->search($search);
+    //}
 
-      $search = ($_POST['s']) ? explode(' ', $_POST['s']) : '';
-
-      //if(isset($_GET['s'])) {
-      $vids = $vidByCat->search($search);
-      //}
-
-    }
-    
     $text = 'Test';
 
     $this->render(
