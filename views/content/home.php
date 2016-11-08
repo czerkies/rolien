@@ -1,22 +1,39 @@
-Je suis la page d'accueil.
+<div class="home">
+  <p>Productions ROLIEN</p>
+</div>
 
-<form action="#" method="" onsubmit="return:false;">
-  <input type="search" name="s" onkeyup="search(this.value)" value="<?php if(isset($_POST['s'])) echo htmlentities($_POST['s']); ?>" autocomplete="off">
+<form action="" method="post">
+  <input type="search" name="s" onkeyup="submit()" value="<?php if(isset($_POST['s'])) echo htmlentities($_POST['s']); ?>" autocomplete="off">
   <button type="button" name="button">search</button>
 </form>
 <hr>
 <?php
 
-//if(isset($vids)) var_dump($vids);
+//if(isset($vids)) echo '<pre>'; var_dump($vids); echo '</pre>';
 
 if(isset($vids)):
-  foreach ($vids as $value): ?>
-    <div class="search" id="<?= $value['title'] . ' ' . $value['description']; ?>">Video : <b><?= $value['title']; ?></b>.(<?= $value['date']; ?>)<hr></div>
+
+  foreach ($vids as $key => $datas):
+
+    echo $key;
+
+    foreach ($datas as $value): ?>
+
+      <div class="search" id="<?= $value['title'] . ' ' . $value['description']; ?>">Video : <b><?= $value['title']; ?></b>.(<?= $value['YEAR']; ?>)<hr></div>
+
   <?php endforeach;
+
+  endforeach;
+
 endif; ?>
 
 
 <script type="text/javascript">
+  function submit() {
+    //document.querySelectorAll('button[type=button]').submit;
+    console.log('Tu cherches quoi ?');
+  }
+
   function node(arg, display) {
 
     for(var i=0; i < 3; i++) {
@@ -26,21 +43,13 @@ endif; ?>
 
   }
 
-  function search(key) {
+  /*function search(key) {
 
     var hide = document.querySelectorAll('.search');
 
     if(key != '') {
 
       var show = document.querySelectorAll('.search[id*="' + key + '"]');
-      /*for(var i=0; i < 3; i++) {
-        console.log(hide[i]);
-        hide[i].style.display="none";
-      }
-      for(var i=0; i < 3; i++) {
-        console.log(show[i]);
-        show[i].style.display="block";
-      }*/
 
       node(hide, 'none');
       node(show, 'block');
@@ -51,5 +60,5 @@ endif; ?>
 
     }
 
-  }
+  }*/
 </script>

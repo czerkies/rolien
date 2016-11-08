@@ -7,6 +7,22 @@
     <link rel="stylesheet" type="text/css" href="<?= RACINE; ?>css/style.css">
   </head>
   <body>
+    <header>
+      <nav>
+        <li>
+          <a href="#">Productions ROLIEN</a>
+        </li>
+        <li>
+          <a href="#">#Foutoir</a>
+        </li>
+        <li>
+          <a href="#">Une vie en 16/9</a>
+        </li>
+        <li>
+          <a href="#">Johnson & Fernandez</a>
+        </li>
+      </nav>
+    </header>
     <?= $buffer; ?>
   </body>
 </html>
