@@ -39,35 +39,53 @@ class publicModel extends superModel {
 
   public function search($keys) {
 
-    $sql = "SELECT * FROM videos";
 
-    if(isset($keys) && !empty($keys)) {
+      $sql = "SELECT *, DATE_FORMAT(date, '%Y') AS YEAR FROM videos";// WHERE date LIKE '%" . $value['YEAR'] . "%'";
 
-      $sqlFinder = " WHERE ";
-      $arrayFind = ['title', 'description', 'date'];
-      foreach ($keys as $value) {
-        $sqlFinder .= " (";
-        foreach ($arrayFind as $keyCol => $col) {
-          if($keyCol > 0) $sqlFinder .= " OR ";
-          $sqlFinder .= "$col LIKE '%$value%'";
+      var_dump($keys);
+
+      if(isset($keys) && !empty($keys)) {
+
+        $sqlFinder = " WHERE ";
+        $arrayFind = ['title', 'description', 'date'];
+        foreach ($keys as $letters) {
+          $sqlFinder .= " (";
+          foreach ($arrayFind as $keyCol => $col) {
+            if($keyCol > 0) $sqlFinder .= " OR ";
+            $sqlFinder .= "$col LIKE '%$letters%'";
+          }
+          $sqlFinder .= ") AND ";
         }
-        $sqlFinder .= ") AND ";
+
+        $sql .= rtrim($sqlFinder, ' AND ');
+
+        //$sql .= " ORDER BY title";
+
+      } else {
+
+        //$sql .= " ORDER BY date DESC";
+
       }
 
-      $sql .= rtrim($sqlFinder, ' AND ');
+      //$sql .= " ORDER BY YEAR";
 
-      $sql .= " ORDER BY title";
+      //echo $sql;
 
-    } else {
+      //var_dump($value['YEAR']);
 
-      $sql .= " ORDER BY date DESC";
+      $datas = $this->pdo()->query($sql);
+      $vids = $datas->fetchAll(PDO::FETCH_ASSOC);
 
-    }
+      foreach ($vids as $keys => $val) {
+        $vidsByYear[$val['YEAR']][] = $vids[$keys];
+      }
 
-    echo $sql;
+      //echo "<pre>"; var_dump($vidsByYear);
+      //$vids[$val['YEAR']] = $datas->fetchAll(PDO::FETCH_ASSOC);
 
-    $datas = $this->pdo()->query($sql);
-    return $result = $datas->fetchAll(PDO::FETCH_ASSOC);
+    //}
+
+    return $vidsByYear;
 
   }
 
