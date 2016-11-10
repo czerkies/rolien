@@ -39,51 +39,49 @@ class publicModel extends superModel {
 
   public function search($keys) {
 
+    echo microtime();
 
-      $sql = "SELECT *, DATE_FORMAT(date, '%Y') AS YEAR FROM videos";// WHERE date LIKE '%" . $value['YEAR'] . "%'";
+    $sql = "SELECT *, DATE_FORMAT(date, '%Y') AS YEAR FROM videos";// WHERE date LIKE '%" . $value['YEAR'] . "%'";
 
-      var_dump($keys);
+    //var_dump($keys);
 
-      if(isset($keys) && !empty($keys)) {
+    if(isset($keys) && !empty($keys)) {
 
-        $sqlFinder = " WHERE ";
-        $arrayFind = ['title', 'description', 'date'];
-        foreach ($keys as $letters) {
-          $sqlFinder .= " (";
-          foreach ($arrayFind as $keyCol => $col) {
-            if($keyCol > 0) $sqlFinder .= " OR ";
-            $sqlFinder .= "$col LIKE '%$letters%'";
-          }
-          $sqlFinder .= ") AND ";
+      $sqlFinder = " WHERE ";
+      $arrayFind = ['title', 'description', 'date'];
+      foreach ($keys as $letters) {
+        $sqlFinder .= " (";
+        foreach ($arrayFind as $keyCol => $col) {
+          if($keyCol > 0) $sqlFinder .= " OR ";
+          $sqlFinder .= "$col LIKE '%$letters%'";
         }
-
-        $sql .= rtrim($sqlFinder, ' AND ');
-
-        //$sql .= " ORDER BY title";
-
-      } else {
-
-        //$sql .= " ORDER BY date DESC";
-
+        $sqlFinder .= ") AND ";
       }
 
-      //$sql .= " ORDER BY YEAR";
+      $sql .= rtrim($sqlFinder, ' AND ');
 
-      //echo $sql;
+      //$sql .= " ORDER BY title";
 
-      //var_dump($value['YEAR']);
+    } else {
 
-      $datas = $this->pdo()->query($sql);
-      $vids = $datas->fetchAll(PDO::FETCH_ASSOC);
+      //$sql .= " ORDER BY date DESC";
 
-      foreach ($vids as $keys => $val) {
-        $vidsByYear[$val['YEAR']][] = $vids[$keys];
-      }
+    }
 
-      //echo "<pre>"; var_dump($vidsByYear);
-      //$vids[$val['YEAR']] = $datas->fetchAll(PDO::FETCH_ASSOC);
+    //$sql .= " ORDER BY YEAR";
 
-    //}
+    //echo $sql;
+
+    //var_dump($value['YEAR']);
+    $datas = $this->pdo()->query($sql);
+    $vids = $datas->fetchAll(PDO::FETCH_ASSOC);
+
+    if($vids) foreach ($vids as $keys => $val) $vidsByYear[$val['YEAR']][$val['title']] = $vids[$keys];
+    else $vidsByYear = NULL;
+    echo '<hr>' . microtime();
+    //$vids[$val['YEAR']] = $datas->fetchAll(PDO::FETCH_ASSOC);
+
+  //}
 
     return $vidsByYear;
 
