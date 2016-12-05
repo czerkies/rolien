@@ -5,44 +5,49 @@ class contentController extends superController {
   public function videos() {
 
     $meta['file_name'] = 'videos';
-    //$meta['folder'] = 'content';
 
-    //$page = new superModel();
-
-    // Récupération des données par cat.
-    // Si une _url[1] est présente, lancer la fonction de récupération de cet article.
+    $vidByCat = new publicModel($_GET['cat']);
+    $order = ($_GET['cat'] === 'jef') ? 'ASC' : 'DESC';
+    $vids = $vidByCat->getVideos(['order' => $order]);
 
     $uve = NULL;
+    $vid = '';
 
-    //$meta['title'] = 'Une vie en 16/9';
     $uve = "Liste du content";
 
-    if(!empty($_GET['vid'])) {
+    if(isset($_GET['vid']) && !empty($_GET['vid'])) {
 
-      $meta['title'] = 'video : ' . $_GET['vid'];
-      $uve = "Video #" . $_GET['vid'] . " en cours";
+      $vid = $vidByCat->getVideo($_GET['vid']);
+
+      if($vid) {
+
+        $meta['title'] = 'video : ' . $vid['title'];
+        $meta['description'] = $vid['description'];
+        $uve = "Video #" . $vid['title'] . " en cours";
+
+      } else {
+
+        self::errorUrl();
+
+      }
 
     }
 
     $word = new queryModel('test');
-    $hw = $word->read(
-      [
-        'column' => 'word',
-        //'where' => "word = 'world'",
-        /*'limit' => $limit,
-        'orderby' => 'word',
-        'order' => 'desc',*/
-        //'format' => 'rows'
-      ]
-    );
+    $hw = $word->read([
+      'column' => 'word',
+      //'where' => "word = 'world'",
+      /*'limit' => $limit,
+      'orderby' => 'word',
+      'order' => 'desc',*/
+      //'format' => 'rows'
+    ]);
 
-    //$meta = $meta ?? NULL;
-    //$meta['title'] = "Fonction";
     $meta['restriction'] = 0;
 
     $this->render(
       $meta,
-      ['hw' => $hw, 'uve' => $uve]
+      ['hw' => $hw, 'uve' => $uve, 'vids' => $vids, 'vid' => $vid]
     );
 
   }
@@ -50,12 +55,21 @@ class contentController extends superController {
   public function home() {
 
     $meta['file_name'] = 'home';
+    $result = NULL;
+
+    $vidByCat = new publicModel();
+
+    $search = isset($_POST['s']) ? explode(' ', $_POST['s']) : NULL;
+
+    //if(isset($_GET['s'])) {
+    $vids = $vidByCat->search($search);
+    //}
 
     $text = 'Test';
 
     $this->render(
       $meta,
-      ['text' => $text]
+      ['text' => $text, 'vids' => $vids]
     );
 
   }
@@ -63,14 +77,6 @@ class contentController extends superController {
   public function aPropos() {
 
     $meta['file_name'] = 'a-propos';
-
-    $this->render($meta);
-
-  }
-
-  public function errorUrl() {
-
-    $meta['file_name'] = 'errorUrl';
 
     $this->render($meta);
 
